@@ -1,42 +1,58 @@
+#pylint: disable = W0312
 import math
-def add_vec2(lhs, rhs):
-	temp = [0, 0]
-	temp[0] = lhs[0] + rhs[0]
-	temp[1] = lhs[1] + rhs[1]
-	return temp
-def subtract_vec2(lhs, rhs):
-	temp = [0, 0]
-	temp[0] = lhs[0] - rhs[0]
-	temp[1] = lhs[1] - rhs[1]
-	return temp
-def multiply_vec2(lhs, rhs):
-	temp = [0, 0]
-	temp[0] = lhs[0] * rhs[0]
-	temp[1] = lhs[1] * rhs[1]
-	return temp
-def is_equal_to(lhs, rhs):
-	if lhs[0] == rhs[0] and lhs[1] == rhs[1]:
-		return True
-	else:
-		return False
-def dot(lhs, rhs):
-	temp = lhs[0] * rhs[0] + lhs[1] * rhs[1]
-	return temp
-def magnitude(rhs):
-	result = rhs[0] * rhs[0] + rhs[1] * rhs[1]
-	mag = math.sqrt(result)
-	return mag
-def normalize(rhs):
-	temp = [0, 0]
-	temp[0] = rhs[0] / magnitude(rhs)
-	temp[1] = rhs[1] / magnitude(rhs)
-	return temp
-vec_one = [15, 20]
-vec_two = [15, 20]
-print add_vec2(vec_one, vec_two)
-print subtract_vec2(vec_one, vec_two)
-print multiply_vec2(vec_one, vec_two)	
-print is_equal_to(vec_one, vec_two)
-print dot(vec_one, vec_two)
-print magnitude(vec_one)
-print normalize(vec_one)
+
+class Vector2:
+	'''2D Vector class'''
+	def __init__(self, xpos, ypos):
+		'''Constructor'''
+		self.x_pos = xpos
+		self.y_pos = ypos
+	def __add__(self, other):
+	    	'''Function to add two Vector2s'''
+		temp = Vector2(0, 0)
+		temp.x_pos = self.x_pos + other.x_pos
+		temp.y_pos = self.y_pos + other.y_pos
+		return temp
+	def __sub__(self, other):
+    		'''Function to subtract two Vector2s'''
+		temp = Vector2(0, 0)
+		temp.x_pos = self.x_pos - other.x_pos
+		temp.y_pos = self.y_pos - other.y_pos
+		return temp
+	def __mul__(self, other):
+    		'''Function to multiply two Vector2s'''
+		temp = Vector2(0, 0)
+		temp.x_pos = self.x_pos * other.x_pos
+		temp.y_pos = self.y_pos * other.y_pos
+		return temp
+	def magnitude(self):
+    		'''Function that returns the magnitude of a Vector2'''
+		result = self.x_pos * self.x_pos + self.y_pos * self.y_pos
+		mag = math.sqrt(result)
+		return mag
+	def dot(self, other):
+			'''Function to return the dot product of two Vector2s'''
+			temp = self.x_pos * other.x_pos + self.y_pos * other.y_pos
+			return temp
+	def normalize(self):
+    		'''Function to return a normalized Vector2'''
+		temp = Vector2(0, 0)
+		temp.x_pos = temp.x_pos / self.magnitude()
+		temp.y_pos = temp.y_pos / self.magnitude()
+		return temp
+	def __eq__(self, other):
+		'''Function to compare two Vector2s'''
+		if self.x_pos == other.x_pos and self.y_pos == other.y_pos:
+			return True
+		else:
+			return False
+	def output(self):
+		'''Function that prints a Vector2 to the console'''
+		print str(self.x_pos) + "," + str(self.y_pos)
+VEC_ONE = Vector2(5, 5)
+VEC_TWO = Vector2(10, 20)
+VEC_THREE = VEC_ONE + VEC_TWO
+VEC_THREE.output()
+print VEC_ONE == VEC_TWO
+MAGNITUDE = VEC_THREE.magnitude()
+print MAGNITUDE

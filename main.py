@@ -1,3 +1,6 @@
+#pylint: disable = E1101
+#pylint: disable = W0312
+
 import os
 def add(lhs, rhs):
 	return lhs + rhs

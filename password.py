@@ -1,10 +1,12 @@
 #pylint: disable = W0312
 from random import *
 
+def weak_password():
+	
 def main():
-	new_file = open('password.txt', 'r')
+	file = open('password.txt', 'r')
 	words = []
-	for line in new_file:
+	for line in file:
     		word = line.replace("\n", "")
 		words.append(word)
 	print words

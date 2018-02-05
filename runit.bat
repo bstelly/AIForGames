@@ -1,3 +1,3 @@
 @ECHO off
-python vector2.py
+python password.py
 pause

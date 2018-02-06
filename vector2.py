@@ -49,10 +49,4 @@ class Vector2:
 	def output(self):
 		'''Function that prints a Vector2 to the console'''
 		print str(self.x_pos) + "," + str(self.y_pos)
-VEC_ONE = Vector2(5, 5)
-VEC_TWO = Vector2(10, 20)
-VEC_THREE = VEC_ONE + VEC_TWO
-VEC_THREE.output()
-print VEC_ONE == VEC_TWO
-MAGNITUDE = VEC_THREE.magnitude()
-print MAGNITUDE
+

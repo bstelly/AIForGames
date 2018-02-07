@@ -1,3 +1,5 @@
+#pylint: disable = W0312
+
 import math
 def add_vec2(lhs, rhs):
 	temp = [0, 0]
@@ -35,7 +37,7 @@ vec_one = [15, 20]
 vec_two = [15, 20]
 print add_vec2(vec_one, vec_two)
 print subtract_vec2(vec_one, vec_two)
-print multiply_vec2(vec_one, vec_two)	
+print multiply_vec2(vec_one, vec_two)
 print is_equal_to(vec_one, vec_two)
 print dot(vec_one, vec_two)
 print magnitude(vec_one)

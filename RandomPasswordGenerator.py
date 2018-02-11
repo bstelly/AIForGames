@@ -8,7 +8,7 @@ def weak_password():
 	for line in file:
     		word = line.replace("\n", "")
 		words.append(word)
-	rand_num = randint(0, 29)
+	rand_num = randint(0, 99)
 	password = words[rand_num]
 	os.system('cls')
 	print password
@@ -20,8 +20,8 @@ def medium_password():
 	for line in file:
     		word = line.replace("\n", "")
 		words.append(word)
-	rand_num_one = randint(31, 64)
-	rand_num_two = randint(0, 29)
+	rand_num_one = randint(101, 207)
+	rand_num_two = randint(0, 99)
 	password = words[rand_num_one]
 	password = str(password)
 	password = password.capitalize()
@@ -40,8 +40,8 @@ def strong_password():
 	for line in file:
     		word = line.replace("\n", "")
 		words.append(word)
-	rand_num_one = randint(31, 64)
-	rand_num_two = randint(0, 29)
+	rand_num_one = randint(101, 207)
+	rand_num_two = randint(0, 99)
 	password = str(words[rand_num_one])
 	password = password.capitalize()
 	second_word = str(words[rand_num_two])

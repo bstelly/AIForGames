@@ -22,14 +22,22 @@ class A_star:
                      (self.current_node.position + Vector2(-1, 1)), #Top Left
                      (self.current_node.position + Vector2(1, -1)), #Bot Right
                      (self.current_node.position + Vector2(-1, -1))] #Bot Left
-        counter = 0
+        #Can't depend on the nodes being found in a specific order everytime
         for node in self.grid.nodes:
             for pos in neighbors:
-                if (self.grid.nodes[node].position is neighbors[pos] and
-                        self.grid.node[node].is_transversable is True and counter <= 8):
-                    self.open_list.append(self.grid.node[node])
-                    self.grid.node[node].parent = self.current_node
-                    counter += 1
-    
-    def find_gscore(self):
-        
+                if (node == pos and node.is_traversable and node not in self.closed_list):
+                    if node not in self.open_list:
+                        self.open_list.append(node)
+                    node.calc_g_score(self.current_node)
+                    node.calc_h_score(self.end_node)
+                    node.calc_f_score()
+                    node.set_parent(self.current_node)
+
+
+
+
+#                    if node.parent is not None:
+#                        if node.g_score < :
+#                            node.set_parent(self.current_node)
+#                    elif node.parent is None:
+#                        node.set_parent(self.current)

@@ -46,6 +46,12 @@ class Vector2:
 			return True
 		else:
 			return False
+	def distance(self, other):
+		'''Function to calculate the distance between two Vector2s'''
+		distance_x = other.x_pos - self.x_pos
+		distance_y = other.y_pos - self.y_pos
+		temp = Vector2(distance_x, distance_y)
+		return temp
 	def output(self):
 		'''Function that prints a Vector2 to the console'''
 		print str(self.x_pos) + "," + str(self.y_pos)

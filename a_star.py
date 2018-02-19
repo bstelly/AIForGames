@@ -30,3 +30,6 @@ class A_star:
                     self.open_list.append(self.grid.node[node])
                     self.grid.node[node].parent = self.current_node
                     counter += 1
+    
+    def find_gscore(self):
+        

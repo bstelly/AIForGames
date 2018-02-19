@@ -4,7 +4,7 @@ from vector2 import Vector2
 class Graph:
     '''Graph Class for storing nodes'''
     def __init__(self, length, height):
-        '''Contructor for Graph class'''
+        '''Constructor for Graph class'''
         self.length = length
         self.height = height
         self.nodes = []

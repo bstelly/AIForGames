@@ -17,11 +17,22 @@ class Node:
         #Check to see if you have a parent already. If so you need to see if the movement
         #cost from the current node to this node is a better option
         if self.position != other.position:
-            if (self.position.x_pos == other.position.x_pos or
-                    self.position.y_pos == other.position.y_pos):
-                self.g_score = other.g_score + 10
-            else:
-                self.g_score = other.g_score + 14
+            if self.parent is None:
+                if (self.position.x_pos == other.position.x_pos or
+                        self.position.y_pos == other.position.y_pos):
+                    self.g_score = other.g_score + 10
+                else:
+                    self.g_score = other.g_score + 14
+            elif self.parent is not None:
+                tentative_g_score = self.g_score
+                if (self.position.x_pos == other.position.x_pos or
+                        self.position.y_pos == other.position.y_pos):
+                    self.g_score = other.g_score + 10
+                else:
+                    self.g_score = other.g_score + 14
+                if tentative_g_score < self.g_score:
+                    self.g_score = tentative_g_score
+                    other.set_parent(self)
 
     def calc_h_score(self, other):
         '''Calculates the H-Score for a node'''

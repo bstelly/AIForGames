@@ -19,4 +19,30 @@ class Graph:
         self.nodes = []
         self.create_nodes()
 
+    def get_neighbors(self, current_node):
+        '''Returns a list of valid neighbor positions'''
+        #List of valid negihbor positions
+        neighbors_positions = [(current_node.position + Vector2(0, 1)), #Top
+                               (current_node.position + Vector2(0, -1)), #Bot
+                               (current_node.position + Vector2(1, 0)), #Right
+                               (current_node.position + Vector2(-1, 0)), #Left
+                               (current_node.position + Vector2(1, 1)), #Top Right
+                               (current_node.position + Vector2(-1, 1)), #Top Left
+                               (current_node.position + Vector2(1, -1)), #Bot Right
+                               (current_node.position + Vector2(-1, -1))] #Bot Left
+        neighbors = []
+        for node in self.nodes:
+            for pos in neighbors_positions:
+                if node.position == pos:
+                    neighbors.append(node)
+            #loop through all nodes in Graph
+                #loop through all valid neighbor positions
+                    #if node position == valid position
+                        #add it to neighbors list
+        return neighbors
 
+TEST_GRID = Graph(10, 10)
+POSITION = Vector2(2, 5)
+TEST_NODE = Node(POSITION)
+TEST_GRID.get_neighbors(TEST_NODE)
+print neighbors.nodes

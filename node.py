@@ -32,7 +32,7 @@ class Node:
                     self.g_score = other.g_score + 14
                 if tentative_g_score < self.g_score:
                     self.g_score = tentative_g_score
-                    other.set_parent(self)
+                    self.set_parent(other.parent)
 
     def calc_h_score(self, other):
         '''Calculates the H-Score for a node'''

@@ -14,7 +14,7 @@ class AStar:
         self.end_node = end
         self.current_node = start
         self.open_list.append(start)
-        
+        self.path = None
 
     def find_current(self):
         '''Function to find the current node in the path'''
@@ -42,12 +42,41 @@ class AStar:
                         neighbor.calc_f_score()
                     if neighbor.position == self.end_node.position:
                         self.closed_list.append(self.end_node)
+                        self.find_current()
+
+        path = []
+        while self.current_node.parent:
+            path.append(self.current_node)
+            self.current_node = self.current_node.parent
+        path.append(self.current_node)
+        self.path = path
+
 
 
 
 TEST = Graph(10, 10)
-START = Node(Vector2(0, 3))
-END = Node(Vector2(5, 2))
+START = Node(Vector2(2, 0))
+END = Node(Vector2(2, 4))
+TEST.nodes[12].toggle_traversable()
+TEST.nodes[22].toggle_traversable()
+TEST.nodes[32].toggle_traversable()
+
 AI = AStar(TEST, START, END)
 AI.find_path()
+COUNTER = 0
+for node in TEST.nodes:
+    if COUNTER is 10:
+        print '\n',
+        COUNTER = 0
+    if node.is_traversable is False:
+        print'[#]',
+    elif AI.start_node.position == node.position:
+        print '[S]',
+    elif AI.end_node.position == node.position:
+        print '[G]',
+    elif AI.path.__contains__(node):
+        print '[x]',
+    else:
+        print '[ ]',
+    COUNTER += 1
 print 'done'

@@ -16,8 +16,6 @@ class Node:
 
     def calc_g_score(self, other):
         '''Calculates the G-Score for a node'''
-        #Check to see if you have a parent already. If so you need to see if the movement
-        #cost from the current node to this node is a better option
         if self.position != other.position:
             if self.parent is None:
                 if (self.position.x_pos == other.position.x_pos or
@@ -39,8 +37,7 @@ class Node:
     def calc_h_score(self, other):
         '''Calculates the H-Score for a node'''
         distance = self.position.distance(other.position)
-        total = distance.x_pos + distance.y_pos
-        self.h_score = total * 10
+        self.h_score = distance * 10
 
     def calc_f_score(self):
         '''Calculates the F-Score for a node'''
@@ -58,4 +55,3 @@ class Node:
             self.is_goal = not self.is_goal
         if state == "start":
             self.is_start = not self.is_start
-            

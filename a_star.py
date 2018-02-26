@@ -18,9 +18,10 @@ class AStar:
 
 
     def find_current(self):
-        '''Function to find the current node in the path'''
+        '''Function to find the current node in the path
+        the current node gets added to the closed list and then removed from the open list'''
         self.current_node = min(self.open_list, key=attrgetter('f_score'))
-        self.closed_list.append(min(self.open_list, key=attrgetter('f_score')))
+        self.closed_list.append(self.current_node)
         index = self.open_list.index(min(self.open_list, key=attrgetter('f_score')))
         self.open_list.pop(index)
 

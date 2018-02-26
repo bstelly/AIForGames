@@ -50,8 +50,8 @@ class Vector2:
 		'''Function to calculate the distance between two Vector2s'''
 		distance_x = abs(other.x_pos - self.x_pos)
 		distance_y = abs(other.y_pos - self.y_pos)
-		temp = Vector2(distance_x, distance_y)
-		return temp
+		distance_total = distance_x + distance_y
+		return distance_total
 	def output(self):
 		'''Function that prints a Vector2 to the console'''
 		print str(self.x_pos) + "," + str(self.y_pos)

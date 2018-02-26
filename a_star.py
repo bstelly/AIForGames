@@ -43,7 +43,6 @@ class AStar:
                     if neighbor.position == self.end_node.position:
                         self.closed_list.append(self.end_node)
                         self.find_current()
-
         path = []
         while self.current_node.parent:
             path.append(self.current_node)
@@ -51,32 +50,35 @@ class AStar:
         path.append(self.current_node)
         self.path = path
 
+    def print_path(self):
+        counter = 0
+        for node in self.grid.nodes:
+            if counter is 10:
+                print '\n',
+                counter = 0
+            if node.is_traversable is False:
+                print'[#]',
+            elif AI.start_node.position == node.position:
+                print '[S]',
+            elif AI.end_node.position == node.position:
+                print '[G]',
+            elif AI.path.__contains__(node):
+                print '[x]',
+            else:
+                print '[ ]',
+            counter += 1
+        print 'done'
 
 
 
-TEST = Graph(10, 10)
+
+TEST_Grid = Graph(10, 10)
 START = Node(Vector2(2, 0))
 END = Node(Vector2(2, 4))
-TEST.nodes[12].toggle_traversable()
-TEST.nodes[22].toggle_traversable()
-TEST.nodes[32].toggle_traversable()
+TEST_Grid.nodes[12].toggle_traversable()
+TEST_Grid.nodes[22].toggle_traversable()
+TEST_Grid.nodes[32].toggle_traversable()
 
-AI = AStar(TEST, START, END)
+AI = AStar(TEST_Grid, START, END)
 AI.find_path()
-COUNTER = 0
-for node in TEST.nodes:
-    if COUNTER is 10:
-        print '\n',
-        COUNTER = 0
-    if node.is_traversable is False:
-        print'[#]',
-    elif AI.start_node.position == node.position:
-        print '[S]',
-    elif AI.end_node.position == node.position:
-        print '[G]',
-    elif AI.path.__contains__(node):
-        print '[x]',
-    else:
-        print '[ ]',
-    COUNTER += 1
-print 'done'
+AI.print_path()

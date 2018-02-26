@@ -61,9 +61,9 @@ class AStar:
                 counter = 0
             if node.is_traversable is False:
                 print'[X]',
-            elif self.start_node.position == node.position:
+            elif node.is_start:
                 print '[S]',
-            elif self.goal_node.position == node.position:
+            elif node.is_goal:
                 print '[G]',
             elif self.path.__contains__(node):
                 print '[#]',
@@ -73,8 +73,10 @@ class AStar:
 
 
 TEST_GRID = Graph(10, 10)
-START = Node(Vector2(1, 0))
-END = Node(Vector2(2, 8))
+START = TEST_GRID[10]
+START.is_start = True
+END = TEST_GRID[28]
+END.is_goal = True
 TEST_GRID.nodes[12].toggle_state("wall")
 TEST_GRID.nodes[22].toggle_state("wall")
 TEST_GRID.nodes[32].toggle_state("wall")

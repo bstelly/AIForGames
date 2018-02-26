@@ -37,7 +37,7 @@ class Graph:
                     neighbors.append(node)
         return neighbors
 
-    def ___getitem__(self, index):
+    def __getitem__(self, index):
         return self.nodes[index]
 
 

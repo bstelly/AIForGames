@@ -11,10 +11,11 @@ class AStar:
         self.open_list = []
         self.closed_list = []
         self.start_node = start
-        self.end_node = end
+        self.goal_node = end
         self.current_node = start
-        self.open_list.append(start)
         self.path = None
+
+
 
     def find_current(self):
         '''Function to find the current node in the path'''
@@ -25,7 +26,8 @@ class AStar:
 
     def find_path(self):
         '''Function to generate a path from start to end node'''
-        while not self.closed_list.__contains__(self.end_node) and self.open_list:
+        self.open_list.append(self.start_node)
+        while not self.closed_list.__contains__(self.goal_node) and self.open_list:
             self.find_current()
             neighbors = self.grid.get_neighbors(self.current_node)
             for neighbor in neighbors:
@@ -33,15 +35,15 @@ class AStar:
                     if not self.open_list.__contains__(neighbor):
                         self.open_list.append(neighbor)
                         neighbor.calc_g_score(self.current_node)
-                        neighbor.calc_h_score(self.end_node)
+                        neighbor.calc_h_score(self.goal_node)
                         neighbor.calc_f_score()
                         neighbor.set_parent(self.current_node)
                     elif self.open_list.__contains__(neighbor):
                         neighbor.calc_g_score(self.current_node)
-                        neighbor.calc_h_score(self.end_node)
+                        neighbor.calc_h_score(self.goal_node)
                         neighbor.calc_f_score()
-                    if neighbor.position == self.end_node.position:
-                        self.closed_list.append(self.end_node)
+                    if neighbor.position == self.goal_node.position:
+                        self.closed_list.append(self.goal_node)
                         self.find_current()
         path = []
         while self.current_node.parent:
@@ -51,34 +53,38 @@ class AStar:
         self.path = path
 
     def print_path(self):
+        '''Function that will print the path that is found'''
         counter = 0
         for node in self.grid.nodes:
             if counter is 10:
                 print '\n',
                 counter = 0
             if node.is_traversable is False:
-                print'[#]',
-            elif AI.start_node.position == node.position:
+                print'[X]',
+            elif self.start_node.position == node.position:
                 print '[S]',
-            elif AI.end_node.position == node.position:
+            elif self.goal_node.position == node.position:
                 print '[G]',
-            elif AI.path.__contains__(node):
-                print '[x]',
+            elif self.path.__contains__(node):
+                print '[#]',
             else:
                 print '[ ]',
             counter += 1
-        print 'done'
 
 
+TEST_GRID = Graph(10, 10)
+START = Node(Vector2(1, 0))
+END = Node(Vector2(2, 8))
+TEST_GRID.nodes[12].toggle_state("wall")
+TEST_GRID.nodes[22].toggle_state("wall")
+TEST_GRID.nodes[32].toggle_state("wall")
+TEST_GRID.nodes[2].toggle_state("wall")
+TEST_GRID.nodes[42].toggle_state("wall")
+TEST_GRID.nodes[52].toggle_state("wall")
+TEST_GRID.nodes[45].toggle_state("wall")
+TEST_GRID.nodes[35].toggle_state("wall")
+TEST_GRID.nodes[55].toggle_state("wall")
 
-
-TEST_Grid = Graph(10, 10)
-START = Node(Vector2(2, 0))
-END = Node(Vector2(2, 4))
-TEST_Grid.nodes[12].toggle_traversable()
-TEST_Grid.nodes[22].toggle_traversable()
-TEST_Grid.nodes[32].toggle_traversable()
-
-AI = AStar(TEST_Grid, START, END)
+AI = AStar(TEST_GRID, START, END)
 AI.find_path()
 AI.print_path()

@@ -11,6 +11,8 @@ class Node:
         self.f_score = 0
         self.parent = None
         self.is_traversable = True
+        self.is_goal = False
+        self.is_start = False
 
     def calc_g_score(self, other):
         '''Calculates the G-Score for a node'''
@@ -48,6 +50,12 @@ class Node:
         '''Set the parent of a node to another node'''
         self.parent = other
 
-    def toggle_traversable(self):
+    def toggle_state(self, state):
         '''Toggle the is_traversable variable'''
-        self.is_traversable = not self.is_traversable
+        if state == "wall":
+            self.is_traversable = not self.is_traversable
+        if state == "goal":
+            self.is_goal = not self.is_goal
+        if state == "start":
+            self.is_start = not self.is_start
+            

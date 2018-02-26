@@ -37,6 +37,10 @@ class Graph:
                     neighbors.append(node)
         return neighbors
 
+    def ___getitem__(self, index):
+        return self.nodes[index]
+
+
 TEST_GRID = Graph(10, 10)
 POSITION = Vector2(2, 5)
 TEST_NODE = Node(POSITION)

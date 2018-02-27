@@ -4,7 +4,7 @@ from operator import attrgetter
 from graph import Graph
 
 class AStar:
-    def __init__(self, graph, start, end):
+    def __init__(self, start, end, graph):
         self.grid = graph
         self.open_list = []
         self.closed_list = []
@@ -89,6 +89,6 @@ TEST_GRID.nodes[45].toggle_state("wall")
 TEST_GRID.nodes[35].toggle_state("wall")
 TEST_GRID.nodes[55].toggle_state("wall")
 
-AI = AStar(TEST_GRID, START, END)
+AI = AStar(START, END, TEST_GRID)
 AI.find_path()
 AI.print_path()

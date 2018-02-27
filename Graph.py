@@ -39,9 +39,3 @@ class Graph:
 
     def __getitem__(self, index):
         return self.nodes[index]
-
-
-TEST_GRID = Graph(10, 10)
-POSITION = Vector2(2, 5)
-TEST_NODE = Node(POSITION)
-TEST_GRID.get_neighbors(TEST_NODE)

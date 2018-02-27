@@ -13,8 +13,6 @@ class AStar:
         self.current_node = start
         self.path = None
 
-
-
     def find_current(self):
         '''Function to find the current node in the path
         the current node gets added to the closed list and then removed from the open list'''
@@ -75,7 +73,6 @@ class AStar:
             else:
                 print '[ ]',
             counter += 1
-
 
 TEST_GRID = Graph(10, 10)
 START = TEST_GRID[10]

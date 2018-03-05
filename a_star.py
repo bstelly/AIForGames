@@ -74,21 +74,4 @@ class AStar:
                 print '[ ]',
             counter += 1
 
-TEST_GRID = Graph(10, 10)
-START = TEST_GRID[10]
-START.is_start = True
-END = TEST_GRID[28]
-END.is_goal = True
-TEST_GRID.nodes[12].toggle_state("wall")
-TEST_GRID.nodes[22].toggle_state("wall")
-TEST_GRID.nodes[32].toggle_state("wall")
-TEST_GRID.nodes[2].toggle_state("wall")
-TEST_GRID.nodes[42].toggle_state("wall")
-TEST_GRID.nodes[52].toggle_state("wall")
-TEST_GRID.nodes[45].toggle_state("wall")
-TEST_GRID.nodes[35].toggle_state("wall")
-TEST_GRID.nodes[55].toggle_state("wall")
 
-AI = AStar(START, END, TEST_GRID)
-AI.find_path()
-AI.print_path()

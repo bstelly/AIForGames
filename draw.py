@@ -5,18 +5,21 @@ from draw_utils import Circle
 from draw_utils import Line
 from draw_utils import Ellipse
 from vector2 import Vector2
+from a_star import AStar
+from graph import Graph
+from node import Node
 
 def main():
     pygame.init()
-    screen_height = 768
     screen_width = 1360
+    screen_height = 768
     screen = pygame.display.set_mode((screen_width, screen_height))
-    screen.fill((0, 0, 255))
-    position = Vector2(500, 700)
-    scale_x = 50
-    scale_y = 50
+    screen.fill((0, 0, 80))
+    position = Vector2(10, 10)
+    scale_x = 1
+    scale_y = 1
     while True:
-        screen.fill((0, 0, 255))
+        screen.fill((255, 255, 255))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -33,10 +36,13 @@ def main():
         if (pygame.key.get_pressed()[pygame.K_UP] != 0 and
                 position.y_pos >= 0):
             position = position + Vector2(0, -1)
-        rect = Rectangle(screen, (0, 255, 0), position, scale_x, scale_y)
-        circ = Circle(screen, (255, 0, 0), position, 20)
-        line = Line(screen, (0, 255, 0), Vector2(100, 100), Vector2(1300, 700))
-        ellipse = Ellipse(screen, (0, 255, 0), Vector2(300, 500), 100, 50)
-        pygame.display.flip()
+        rect = Rectangle(screen, (0, 0, 0), position, scale_x, scale_y)
+        i = 0
+        lines_vert = []
+        lines_horz = []
+        while i <= 1360:
+            lines.append(Line(screen, (0, 0, 0), Vector2(i, 0), Vector2(i, 768), 4))
+            i += 
 
+        pygame.display.flip()
 main()

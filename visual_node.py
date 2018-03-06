@@ -13,12 +13,20 @@ class GraphVisual(object):
         self.node_offset = node_offset
         self.draw_surface = draw_surface
         self.node_visuals = []
+        self.gen_visual_nodes()
 
     def gen_visual_nodes(self):
         count = 0
-        for x in range(0, self.graph.height * self.node_offset, self.node_offset):
-            for y in range(0, self.graph.length * self.node_offset, self.node_offset):
+        x = 3
+        y = 3
+        while x <= 1360:
+            while y <= 760:
                 new_node = NodeVisual(self.graph[count], Vector2(x, y), 36, 36,
                                       self.draw_surface)
+                self.graph[count].position = Vector2(x, y)
                 self.node_visuals.append(new_node)
                 count += 1
+                y += self.node_offset
+            x += self.node_offset
+            y = 3
+

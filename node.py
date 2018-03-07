@@ -59,3 +59,9 @@ class Node:
             self.is_goal = not self.is_goal
         if state == "start":
             self.is_start = not self.is_start
+
+    def get_x(self):
+        return self.position.x_pos
+
+    def get_y(self):
+        return self.position.y_pos

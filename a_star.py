@@ -54,6 +54,7 @@ class AStar:
             self.current_node = self.current_node.parent
         path.append(self.current_node)
         self.path = path
+        return path
 
     def print_path(self):
         '''Function that will print the path that is found'''

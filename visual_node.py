@@ -23,7 +23,6 @@ class GraphVisual(object):
             while y <= 760:
                 new_node = NodeVisual(self.graph[count], Vector2(x, y), 36, 36,
                                       self.draw_surface)
-                self.graph[count].position = Vector2(x, y)
                 self.node_visuals.append(new_node)
                 count += 1
                 y += self.node_offset

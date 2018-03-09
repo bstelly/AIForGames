@@ -2,26 +2,29 @@
 #pylint: disable = E1101
 from operator import attrgetter
 from graph import Graph
+from vector2 import Vector2
+from node import Node
 
 class AStar:
-    def __init__(self, start, end, graph):
+    def __init__(self, graph, start, end):
         self.grid = graph
         self.open_list = []
         self.closed_list = []
         self.start_node = start
         self.goal_node = end
         self.current_node = start
+        self.open_list.append(start)
         self.path = None
 
     def find_current(self):
-        '''Function to find the current node in the path
-        the current node gets added to the closed list and then removed from the open list'''
+        '''Function to find the current node in the path'''
+        #Find current node, add current node to closed list and remove it from open list
         self.current_node = min(self.open_list, key=attrgetter('f_score'))
         self.closed_list.append(self.current_node)
         self.open_list.remove(self.current_node)
+
     def find_path(self):
         '''Function to generate a path from start to end node'''
-        self.open_list.append(self.start_node)
         while not self.closed_list.__contains__(self.goal_node) and self.open_list:
             self.find_current()
             neighbors = self.grid.get_neighbors(self.current_node)
@@ -57,22 +60,35 @@ class AStar:
         return path
 
     def print_path(self):
-        '''Function that will print the path that is found'''
         counter = 0
         for node in self.grid.nodes:
             if counter is self.grid.length:
                 print '\n',
                 counter = 0
             if node.is_traversable is False:
-                print'[X]',
-            elif node.is_start:
+                print'[#]',
+            elif AI.start_node.position == node.position:
                 print '[S]',
-            elif node.is_goal:
+            elif AI.goal_node.position == node.position:
                 print '[G]',
-            elif self.path.__contains__(node):
+            elif AI.path.__contains__(node):
                 print '[o]',
             else:
                 print '[ ]',
             counter += 1
+        print 'done'
 
+TEST_Grid = Graph(10, 10)
+START = Node(Vector2(2, 0))
+END = Node(Vector2(2, 8))
+TEST_Grid.nodes[2].toggle_state("wall")
+TEST_Grid.nodes[12].toggle_state("wall")
+TEST_Grid.nodes[22].toggle_state("wall")
+TEST_Grid.nodes[32].toggle_state("wall")
+TEST_Grid.nodes[42].toggle_state("wall")
+TEST_Grid.nodes[52].toggle_state("wall")
+TEST_Grid.nodes[62].toggle_state("wall")
 
+AI = AStar(TEST_Grid, START, END)
+AI.find_path()
+AI.print_path()

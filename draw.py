@@ -17,27 +17,33 @@ def main():
     screen = pygame.display.set_mode((screen_width, screen_height))
     screen.fill((0, 0, 0))
     grid = Graph(34, 19)
-    walls = []
     visual_graph = GraphVisual(grid, 40, screen)
-
     start_square = pygame.rect.Rect(3, 363, 36, 36)
     goal_square = pygame.rect.Rect(1323, 363, 36, 36)
-
     node_squares = []
-    for node in grid.nodes:
-        left = node.get_x()
-        top = node.get_y()
-        node_squares.append(pygame.rect.Rect(left, top, 36, 36))
+    draw_path = []
+    #for node in grid.nodes:
+    #    left = node.get_x()
+    #    top = node.get_y()
+    for x in range(0, len(visual_graph.node_visuals) - 1):
+        node_squares.append(pygame.rect.Rect(, 36, 36))
     dragging_start = False
     dragging_goal = False
     mouse_is_down = False
+    pressed_enter = False
+
+    
     while True:
         screen.fill((0, 0, 0))
         visual_graph = GraphVisual(grid, 40, screen)
+        start_node = Node(Vector2(start_square.left, start_square.top))
+        goal_node = Node(Vector2(goal_square.left, goal_square.top))
+        astar = AStar(grid, start_node, goal_node)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+
         pygame.event.pump()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
@@ -58,7 +64,6 @@ def main():
                             grid.nodes[count].toggle_state("wall")
                             mouse_is_down = True
                         count += 1
-
         elif event.type == pygame.MOUSEBUTTONUP:
             mouse_is_down = False
             if event.button == 1:
@@ -83,6 +88,17 @@ def main():
                 mouse_x, mouse_y = event.pos
                 goal_square.x = mouse_x + offset_x
                 goal_square.y = mouse_y + offset_y
+        if pygame.key.get_pressed()[pygame.K_RETURN]:
+            pressed_enter = not pressed_enter
+
+        path = astar.find_path()
+        if pressed_enter:
+            count = 0
+            count_two = 1
+            while count_two < len(path):
+                line_start = path[count].position
+                line_end = path[count_two].position
+                draw_path.append(Line(screen, (0, 0, 255), line_start, line_end, 10))
 
         pygame.draw.rect(screen, (0, 255, 0), start_square)
         pygame.draw.rect(screen, (255, 0, 0), goal_square)
@@ -92,6 +108,7 @@ def main():
                 pygame.draw.rect(screen, (0, 0, 0), node_squares[count])
             count += 1
         pygame.display.flip()
+
 
 
 

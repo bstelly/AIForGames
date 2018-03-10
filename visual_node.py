@@ -1,5 +1,6 @@
 from draw_utils import Rectangle
 from vector2 import Vector2
+import pygame
 
 class NodeVisual(object):
     def __init__(self, node, draw_pos, scale_x, scale_y, draw_surface):
@@ -13,6 +14,7 @@ class GraphVisual(object):
         self.node_offset = node_offset
         self.draw_surface = draw_surface
         self.node_visuals = []
+        self.node_visual_colliders = []
         self.gen_visual_nodes()
 
     def gen_visual_nodes(self):
@@ -24,6 +26,7 @@ class GraphVisual(object):
                 new_node = NodeVisual(self.graph[count], Vector2(x, y), 36, 36,
                                       self.draw_surface)
                 self.node_visuals.append(new_node)
+                self.node_visual_colliders.append(pygame.rect.Rect(x, y, 36, 36))
                 count += 1
                 y += self.node_offset
             x += self.node_offset

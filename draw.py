@@ -25,8 +25,11 @@ def main():
     #for node in grid.nodes:
     #    left = node.get_x()
     #    top = node.get_y()
-    for x in range(0, len(visual_graph.node_visuals) - 1):
-        node_squares.append(pygame.rect.Rect(, 36, 36))
+#    for x in range(0, len(visual_graph.node_visuals) - 1):
+#        node_squares.append(pygame.rect.Rect(, 36, 36))
+#    for node in visual_graph.node_visuals:
+#        node_squares.append(pygame.rect.Rect(node.))
+
     dragging_start = False
     dragging_goal = False
     mouse_is_down = False
@@ -59,7 +62,7 @@ def main():
                     offset_y = goal_square.y - mouse_y
                 else:
                     count = 0
-                    for node in node_squares:
+                    for node in visual_graph.node_visual_colliders:
                         if node.collidepoint(event.pos) and mouse_is_down is False:
                             grid.nodes[count].toggle_state("wall")
                             mouse_is_down = True
@@ -69,14 +72,14 @@ def main():
             if event.button == 1:
                 count = 0
                 if dragging_start is True or dragging_goal is True:
-                    for node in node_squares:
-                        if start_square.colliderect(node):
-                            start_square.left = grid.nodes[count].get_x()
-                            start_square.top = grid.nodes[count].get_y()
+                    for collider in visual_graph.node_visual_colliders:
+                        if start_square.colliderect(collider):
+                            start_square.left = visual_graph.node_visual_colliders[count].left
+                            start_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_start = False
-                        if goal_square.colliderect(node):
-                            goal_square.left = grid.nodes[count].get_x()
-                            goal_square.top = grid.nodes[count].get_y()
+                        if goal_square.colliderect(collider):
+                            goal_square.left = visual_graph.node_visual_colliders[count].left
+                            goal_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_goal = False
                         count += 1
         elif event.type == pygame.MOUSEMOTION:
@@ -105,7 +108,7 @@ def main():
         count = 0
         for node in grid.nodes:
             if node.is_traversable is False:
-                pygame.draw.rect(screen, (0, 0, 0), node_squares[count])
+                pygame.draw.rect(screen, (0, 0, 0), visual_graph.node_visual_colliders[count])
             count += 1
         pygame.display.flip()
 

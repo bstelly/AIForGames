@@ -20,8 +20,10 @@ def main():
     visual_graph = GraphVisual(grid, 40, screen)
     start_square = pygame.rect.Rect(3, 363, 36, 36)
     goal_square = pygame.rect.Rect(1323, 363, 36, 36)
-    node_squares = []
-    draw_path = []
+    start_node = Node(Vector2(0, 9))
+    goal_node = Node(Vector2(33, 9))
+    astar = AStar(grid, start_node, goal_node)
+    drawn_path = []
     #for node in grid.nodes:
     #    left = node.get_x()
     #    top = node.get_y()
@@ -39,9 +41,7 @@ def main():
     while True:
         screen.fill((0, 0, 0))
         visual_graph = GraphVisual(grid, 40, screen)
-        start_node = Node(Vector2(start_square.left, start_square.top))
         goal_node = Node(Vector2(goal_square.left, goal_square.top))
-        astar = AStar(grid, start_node, goal_node)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -77,11 +77,15 @@ def main():
                             start_square.left = visual_graph.node_visual_colliders[count].left
                             start_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_start = False
+                            start_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(), visual_graph.node_visuals[count].node.get_y()))
+
                         if goal_square.colliderect(collider):
                             goal_square.left = visual_graph.node_visual_colliders[count].left
                             goal_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_goal = False
+                            goal_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(), visual_graph.node_visuals[count].node.get_y()))
                         count += 1
+                    astar = AStar(grid, start_node, goal_node)
         elif event.type == pygame.MOUSEMOTION:
             if dragging_start:
                 mouse_x, mouse_y = event.pos
@@ -93,15 +97,18 @@ def main():
                 goal_square.y = mouse_y + offset_y
         if pygame.key.get_pressed()[pygame.K_RETURN]:
             pressed_enter = not pressed_enter
+            path = astar.find_path()
 
-        path = astar.find_path()
         if pressed_enter:
             count = 0
             count_two = 1
-            while count_two < len(path):
-                line_start = path[count].position
-                line_end = path[count_two].position
-                draw_path.append(Line(screen, (0, 0, 255), line_start, line_end, 10))
+            while count_two <= len(path) - 1:
+                line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
+                line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
+                drawn_path.append(Line(screen, (0, 0, 255), Vector2(line_start.x_pos + 20, line_start.y_pos + 20), Vector2(line_end.x_pos + 20, line_end.y_pos + 20), 5))
+                count += 1
+                count_two += 1
+
 
         pygame.draw.rect(screen, (0, 255, 0), start_square)
         pygame.draw.rect(screen, (255, 0, 0), goal_square)

@@ -5,7 +5,7 @@ import pygame
 class NodeVisual(object):
     def __init__(self, node, draw_pos, scale_x, scale_y, draw_surface):
         self.node = node
-        self.shape = Rectangle(draw_surface, (255, 255, 255), draw_pos,
+        self.shape = Rectangle(draw_surface, (215, 215, 215), draw_pos,
                                scale_x, scale_y)
 
 class GraphVisual(object):
@@ -21,7 +21,7 @@ class GraphVisual(object):
         count = 0
         x = 3
         y = 3
-        while x <= 1360:
+        while x <= 1080:
             while y <= 760:
                 new_node = NodeVisual(self.graph[count], Vector2(x, y), 36, 36,
                                       self.draw_surface)

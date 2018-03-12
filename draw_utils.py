@@ -15,7 +15,7 @@ class Rectangle:
 
     def draw(self):
         pygame.draw.rect(self.surface, self.color, (self.position.x_pos, self.position.y_pos,
-                                                   self.length, self.height))
+                                                    self.length, self.height))
 
 class Circle:
     '''Class for drawing circles to the screen'''

@@ -26,10 +26,6 @@ class GraphVisual(object):
                 if self.graph[count].is_traversable is True:
                     new_node = NodeVisual(self.graph[count], (215, 215, 215), (Vector2(x, y)), 36, 36,
                                           self.draw_surface)
-                elif self.graph[count].is_traversable is False:
-                    new_node = NodeVisual(self.graph[count], (0, 0, 0), (Vector2(x, y)), 36, 36,
-                                          self.draw_surface)
-                
                 self.node_visuals.append(new_node)
                 self.node_visual_colliders.append(pygame.rect.Rect(x, y, 36, 36))
                 count += 1
@@ -37,3 +33,10 @@ class GraphVisual(object):
             x += self.node_offset
             y = 3
 
+    def draw_nodes(self):
+        for node in self.node_visuals:
+            if not node.node.is_traversable:
+                node.shape.color = (0, 0, 0)
+            else:
+                node.shape.color = (0, 0, 220)
+            node.shape.draw()

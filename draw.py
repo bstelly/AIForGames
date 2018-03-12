@@ -1,18 +1,20 @@
 #pylint: disable = E1101
 #pylint: disable = I1101
+import time
 import pygame
 from draw_utils import Rectangle
-from draw_utils import Circle
 from draw_utils import Line
+from draw_utils import Text
 from vector2 import Vector2
 from a_star import AStar
 from graph import Graph
 from node import Node
 from visual_node import GraphVisual
-import time
+
 
 def main():
 #Vector2(17, 17)      For center of square
+##Init Function for application class
     pygame.init()
     screen_width = 1360
     screen_height = 760
@@ -20,8 +22,8 @@ def main():
     screen.fill((0, 0, 0))
     grid = Graph(27, 19)
     visual_graph = GraphVisual(grid, 40, screen)
-    start_square = pygame.rect.Rect(3, 363, 36, 36)
-    goal_square = pygame.rect.Rect(1323, 363, 36, 36)
+    start_square = pygame.rect.Rect(1320, 640, 36, 36)
+    goal_square = pygame.rect.Rect(1277, 640, 36, 36)
     start_node = Node(Vector2(0, 9))
     goal_node = Node(Vector2(33, 9))
     astar = AStar(grid, start_node, goal_node)
@@ -35,10 +37,12 @@ def main():
     dragging_goal = False
     mouse_is_down = False
     pressed_enter = False
-    
+    visual_graph = GraphVisual(grid, 40, screen)
+########
+#Application update
     while True:
         screen.fill((0, 0, 0))
-        visual_graph = GraphVisual(grid, 40, screen)
+        visual_graph.draw_nodes()
 #        goal_node = Node(Vector2(goal_square.left, goal_square.top))
 
         for event in pygame.event.get():
@@ -48,7 +52,7 @@ def main():
         pygame.event.pump()
         if event.type == pygame.MOUSEBUTTONDOWN:
             pressed_enter = False
-            del path[:]
+            path = astar.find_path
             if event.button == 1:
                 if start_square.collidepoint(event.pos):
                     dragging_start = True
@@ -87,6 +91,15 @@ def main():
                             goal_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(),
                                                      visual_graph.node_visuals[count].node.get_y()))
                         count += 1
+                    if dragging_start is True:
+                        start_square.left = 1320
+                        start_square.top = 640
+                        dragging_start = False
+                    if dragging_goal is True:
+                        goal_square.left = 1277
+                        goal_square.top = 640
+                        dragging_goal = False
+                    #add two funcitons to astar class for assigning start and goal node
                     astar = AStar(grid, start_node, goal_node)
         elif event.type == pygame.MOUSEMOTION:
             if dragging_start:
@@ -146,13 +159,10 @@ def main():
             del animate_path[:]
             del drawn_path[:]
 
-#        count = 0
-#        for node in grid.nodes:
-#            if node.is_traversable is False:
-#                pygame.draw.rect(screen, (215, 215, 215), visual_graph.node_visual_colliders[count])
-#            count += 1
+        test_font = Text("Test Font", "calibri", 50, (255, 255, 255), screen, 1220, 500)
         pygame.draw.rect(screen, (0, 255, 0), start_square)
         pygame.draw.rect(screen, (255, 0, 0), goal_square)
         pygame.display.flip()
+
 
 main()

@@ -57,6 +57,7 @@ class AStar:
             self.current_node = self.current_node.parent
         path.append(self.current_node)
         self.path = path
+        path.reverse()
         return path
 
     def print_path(self):

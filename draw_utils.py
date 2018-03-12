@@ -60,6 +60,18 @@ class Ellipse:
                                                        self.position.y_pos, self.scale_x,
                                                        self.scale_y))
 
-#class Text:
-#    '''Class for drawing text to the screen'''
-#    def __init__(self)
+class Text:
+    '''Class for drawing text to the screen'''
+    def __init__(self, display_text, font_theme, font_size, color, surface, x_pos, y_pos):
+        self.font_theme = font_theme
+        self.font_size = font_size
+        self.font = pygame.font.SysFont(font_theme, font_size)
+        self.color = color
+        self.surface = surface
+        self.text = self.font.render(display_text, True, self.color)
+        self.x = x_pos
+        self.y = y_pos
+        self.draw()
+
+    def draw(self):
+        self.surface.blit(self.text, (self.x, self.y))

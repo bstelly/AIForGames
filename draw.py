@@ -8,6 +8,7 @@ from a_star import AStar
 from graph import Graph
 from node import Node
 from visual_node import GraphVisual
+import time
 
 def main():
 #Vector2(17, 17)      For center of square
@@ -16,15 +17,18 @@ def main():
     screen_height = 760
     screen = pygame.display.set_mode((screen_width, screen_height))
     screen.fill((0, 0, 0))
-    grid = Graph(34, 19)
+    grid = Graph(27, 19)
     visual_graph = GraphVisual(grid, 40, screen)
     start_square = pygame.rect.Rect(3, 363, 36, 36)
     goal_square = pygame.rect.Rect(1323, 363, 36, 36)
     start_node = Node(Vector2(0, 9))
     goal_node = Node(Vector2(33, 9))
     astar = AStar(grid, start_node, goal_node)
+    animate_path = []
     drawn_path = []
     path = []
+    iterator = 0
+    iterator_two = 1
 
     dragging_start = False
     dragging_goal = False
@@ -60,6 +64,7 @@ def main():
                     for node in visual_graph.node_visual_colliders:
                         if node.collidepoint(event.pos) and mouse_is_down is False:
                             current_state = grid.nodes[count].is_traversable
+                            grid.nodes[count].toggle_state("wall")
                             mouse_is_down = True
                         count += 1
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -95,7 +100,13 @@ def main():
                     if node.collidepoint(event.pos) and grid.nodes[count].is_traversable is current_state:
                         grid.nodes[count].toggle_state("wall")
                     count += 1
-                
+        
+        if pygame.key.get_pressed()[pygame.K_c]:
+            for x in range(0, grid.length * grid.height):
+                if grid.nodes[x].is_traversable is False:
+                    grid.nodes[x].toggle_state("wall")
+                    path = astar.find_path()
+                pressed_enter = False
                 
         if pygame.key.get_pressed()[pygame.K_RETURN]:
             pressed_enter = True
@@ -106,24 +117,39 @@ def main():
                 path = astar.find_path()
 
         if pressed_enter:
+            time.sleep(.05)
             count = 0
             count_two = 1
-            while count_two <= len(path) - 1:
+            if iterator_two <= len(path) - 1:
+                line_start = Vector2(path[iterator].get_x() * 40, path[iterator].get_y() * 40)
+                line_end = Vector2(path[iterator_two].get_x() * 40, path[iterator_two].get_y() * 40)
+                animate_path.append(Line(screen, (255, 255, 0), Vector2(line_start.x_pos + 20,
+                                                                    line_start.y_pos + 20),
+                                       Vector2(line_end.x_pos + 20,
+                                               line_end.y_pos + 20), 5))
+            while count_two <= len(animate_path):
                 line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
                 line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
-                drawn_path.append(Line(screen, (0, 0, 255), Vector2(line_start.x_pos + 20,
+                drawn_path.append(Line(screen, (255, 255, 0), Vector2(line_start.x_pos + 20,
                                        line_start.y_pos + 20), Vector2(line_end.x_pos + 20,
                                        line_end.y_pos + 20), 5))
                 count += 1
                 count_two += 1
+            iterator += 1
+            iterator_two += 1
+        else:
+            iterator = 0
+            iterator_two = 1
+            del animate_path[:]
+            del drawn_path[:]
 
-        pygame.draw.rect(screen, (0, 255, 0), start_square)
-        pygame.draw.rect(screen, (255, 0, 0), goal_square)
         count = 0
         for node in grid.nodes:
             if node.is_traversable is False:
                 pygame.draw.rect(screen, (0, 0, 0), visual_graph.node_visual_colliders[count])
             count += 1
+        pygame.draw.rect(screen, (0, 255, 0), start_square)
+        pygame.draw.rect(screen, (255, 0, 0), goal_square)
         pygame.display.flip()
 
 main()

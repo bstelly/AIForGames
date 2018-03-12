@@ -1,4 +1,5 @@
 #pylint: disable = E1101
+#pylint: disable = I1101
 import pygame
 from draw_utils import Rectangle
 from draw_utils import Circle
@@ -77,12 +78,14 @@ def main():
                             start_square.left = visual_graph.node_visual_colliders[count].left
                             start_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_start = False
-                            start_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(), visual_graph.node_visuals[count].node.get_y()))
+                            start_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(),
+                                                      visual_graph.node_visuals[count].node.get_y()))
                         if goal_square.colliderect(collider):
                             goal_square.left = visual_graph.node_visual_colliders[count].left
                             goal_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_goal = False
-                            goal_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(), visual_graph.node_visuals[count].node.get_y()))
+                            goal_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(),
+                                                     visual_graph.node_visuals[count].node.get_y()))
                         count += 1
                     astar = AStar(grid, start_node, goal_node)
         elif event.type == pygame.MOUSEMOTION:
@@ -143,11 +146,11 @@ def main():
             del animate_path[:]
             del drawn_path[:]
 
-        count = 0
-        for node in grid.nodes:
-            if node.is_traversable is False:
-                pygame.draw.rect(screen, (0, 0, 0), visual_graph.node_visual_colliders[count])
-            count += 1
+#        count = 0
+#        for node in grid.nodes:
+#            if node.is_traversable is False:
+#                pygame.draw.rect(screen, (215, 215, 215), visual_graph.node_visual_colliders[count])
+#            count += 1
         pygame.draw.rect(screen, (0, 255, 0), start_square)
         pygame.draw.rect(screen, (255, 0, 0), goal_square)
         pygame.display.flip()

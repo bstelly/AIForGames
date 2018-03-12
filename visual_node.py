@@ -3,9 +3,9 @@ from vector2 import Vector2
 import pygame
 
 class NodeVisual(object):
-    def __init__(self, node, draw_pos, scale_x, scale_y, draw_surface):
+    def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface):
         self.node = node
-        self.shape = Rectangle(draw_surface, (215, 215, 215), draw_pos,
+        self.shape = Rectangle(draw_surface, color, draw_pos,
                                scale_x, scale_y)
 
 class GraphVisual(object):
@@ -23,8 +23,13 @@ class GraphVisual(object):
         y = 3
         while x <= 1080:
             while y <= 760:
-                new_node = NodeVisual(self.graph[count], Vector2(x, y), 36, 36,
-                                      self.draw_surface)
+                if self.graph[count].is_traversable is True:
+                    new_node = NodeVisual(self.graph[count], (215, 215, 215), (Vector2(x, y)), 36, 36,
+                                          self.draw_surface)
+                elif self.graph[count].is_traversable is False:
+                    new_node = NodeVisual(self.graph[count], (0, 0, 0), (Vector2(x, y)), 36, 36,
+                                          self.draw_surface)
+                
                 self.node_visuals.append(new_node)
                 self.node_visual_colliders.append(pygame.rect.Rect(x, y, 36, 36))
                 count += 1

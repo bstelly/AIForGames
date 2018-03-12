@@ -24,24 +24,17 @@ def main():
     goal_node = Node(Vector2(33, 9))
     astar = AStar(grid, start_node, goal_node)
     drawn_path = []
-    #for node in grid.nodes:
-    #    left = node.get_x()
-    #    top = node.get_y()
-#    for x in range(0, len(visual_graph.node_visuals) - 1):
-#        node_squares.append(pygame.rect.Rect(, 36, 36))
-#    for node in visual_graph.node_visuals:
-#        node_squares.append(pygame.rect.Rect(node.))
+    path = []
 
     dragging_start = False
     dragging_goal = False
     mouse_is_down = False
     pressed_enter = False
-
     
     while True:
         screen.fill((0, 0, 0))
         visual_graph = GraphVisual(grid, 40, screen)
-        goal_node = Node(Vector2(goal_square.left, goal_square.top))
+#        goal_node = Node(Vector2(goal_square.left, goal_square.top))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -49,6 +42,8 @@ def main():
 
         pygame.event.pump()
         if event.type == pygame.MOUSEBUTTONDOWN:
+            pressed_enter = False
+            del path[:]
             if event.button == 1:
                 if start_square.collidepoint(event.pos):
                     dragging_start = True
@@ -64,7 +59,7 @@ def main():
                     count = 0
                     for node in visual_graph.node_visual_colliders:
                         if node.collidepoint(event.pos) and mouse_is_down is False:
-                            grid.nodes[count].toggle_state("wall")
+                            current_state = grid.nodes[count].is_traversable
                             mouse_is_down = True
                         count += 1
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -78,7 +73,6 @@ def main():
                             start_square.top = visual_graph.node_visual_colliders[count].top
                             dragging_start = False
                             start_node = Node(Vector2(visual_graph.node_visuals[count].node.get_x(), visual_graph.node_visuals[count].node.get_y()))
-
                         if goal_square.colliderect(collider):
                             goal_square.left = visual_graph.node_visual_colliders[count].left
                             goal_square.top = visual_graph.node_visual_colliders[count].top
@@ -95,9 +89,21 @@ def main():
                 mouse_x, mouse_y = event.pos
                 goal_square.x = mouse_x + offset_x
                 goal_square.y = mouse_y + offset_y
+            elif mouse_is_down:
+                count = 0
+                for node in visual_graph.node_visual_colliders:
+                    if node.collidepoint(event.pos) and grid.nodes[count].is_traversable is current_state:
+                        grid.nodes[count].toggle_state("wall")
+                    count += 1
+                
+                
         if pygame.key.get_pressed()[pygame.K_RETURN]:
-            pressed_enter = not pressed_enter
-            path = astar.find_path()
+            pressed_enter = True
+            if not path:
+                path = astar.find_path()
+            else:
+                astar = AStar(grid, start_node, goal_node)
+                path = astar.find_path()
 
         if pressed_enter:
             count = 0
@@ -105,10 +111,11 @@ def main():
             while count_two <= len(path) - 1:
                 line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
                 line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
-                drawn_path.append(Line(screen, (0, 0, 255), Vector2(line_start.x_pos + 20, line_start.y_pos + 20), Vector2(line_end.x_pos + 20, line_end.y_pos + 20), 5))
+                drawn_path.append(Line(screen, (0, 0, 255), Vector2(line_start.x_pos + 20,
+                                       line_start.y_pos + 20), Vector2(line_end.x_pos + 20,
+                                       line_end.y_pos + 20), 5))
                 count += 1
                 count_two += 1
-
 
         pygame.draw.rect(screen, (0, 255, 0), start_square)
         pygame.draw.rect(screen, (255, 0, 0), goal_square)
@@ -118,8 +125,5 @@ def main():
                 pygame.draw.rect(screen, (0, 0, 0), visual_graph.node_visual_colliders[count])
             count += 1
         pygame.display.flip()
-
-
-
 
 main()

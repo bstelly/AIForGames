@@ -16,6 +16,12 @@ class AStar:
         self.open_list.append(start)
         self.path = None
 
+    def set_start(self, start_node):
+        self.start_node = start_node
+
+    def set_goal(self, goal_node):
+        self.goal_node = goal_node
+
     def find_current(self):
         '''Function to find the current node in the path'''
         #Find current node, add current node to closed list and remove it from open list
@@ -80,15 +86,11 @@ class AStar:
         print 'done'
 
 TEST_Grid = Graph(10, 10)
-START = Node(Vector2(2, 0))
-END = Node(Vector2(2, 8))
-TEST_Grid.nodes[2].toggle_state("wall")
-TEST_Grid.nodes[12].toggle_state("wall")
-TEST_Grid.nodes[22].toggle_state("wall")
-TEST_Grid.nodes[32].toggle_state("wall")
-TEST_Grid.nodes[42].toggle_state("wall")
-TEST_Grid.nodes[52].toggle_state("wall")
-TEST_Grid.nodes[62].toggle_state("wall")
+START = Node(Vector2(0, 0))
+END = Node(Vector2(9, 9))
+TEST_Grid.nodes[35].toggle_state("wall")
+TEST_Grid.nodes[45].toggle_state("wall")
+
 
 AI = AStar(TEST_Grid, START, END)
 AI.find_path()

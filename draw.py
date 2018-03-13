@@ -43,10 +43,9 @@ def main():
     while True:
         screen.fill((0, 0, 0))
         visual_graph.draw_nodes()
-#        goal_node = Node(Vector2(goal_square.left, goal_square.top))
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 return
 
         pygame.event.pump()
@@ -100,7 +99,8 @@ def main():
                         goal_square.top = 640
                         dragging_goal = False
                     #add two funcitons to astar class for assigning start and goal node
-                    astar = AStar(grid, start_node, goal_node)
+                    astar.set_start(start_node)
+                    astar.set_goal(goal_node)
         elif event.type == pygame.MOUSEMOTION:
             if dragging_start:
                 mouse_x, mouse_y = event.pos
@@ -116,21 +116,19 @@ def main():
                     if node.collidepoint(event.pos) and grid.nodes[count].is_traversable is current_state:
                         grid.nodes[count].toggle_state("wall")
                     count += 1
-        
+
         if pygame.key.get_pressed()[pygame.K_c]:
             for x in range(0, grid.length * grid.height):
                 if grid.nodes[x].is_traversable is False:
                     grid.nodes[x].toggle_state("wall")
                     path = astar.find_path()
                 pressed_enter = False
-                
+
         if pygame.key.get_pressed()[pygame.K_RETURN]:
             pressed_enter = True
-            if not path:
-                path = astar.find_path()
-            else:
-                astar = AStar(grid, start_node, goal_node)
-                path = astar.find_path()
+            astar.set_start(start_node)
+            astar.set_goal(goal_node)
+            path = astar.find_path()
 
         if pressed_enter:
             time.sleep(.05)
@@ -140,15 +138,15 @@ def main():
                 line_start = Vector2(path[iterator].get_x() * 40, path[iterator].get_y() * 40)
                 line_end = Vector2(path[iterator_two].get_x() * 40, path[iterator_two].get_y() * 40)
                 animate_path.append(Line(screen, (255, 255, 0), Vector2(line_start.x_pos + 20,
-                                                                    line_start.y_pos + 20),
-                                       Vector2(line_end.x_pos + 20,
-                                               line_end.y_pos + 20), 5))
+                                                                        line_start.y_pos + 20),
+                                         Vector2(line_end.x_pos + 20, line_end.y_pos + 20), 5))
             while count_two <= len(animate_path):
                 line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
                 line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
                 drawn_path.append(Line(screen, (255, 255, 0), Vector2(line_start.x_pos + 20,
-                                       line_start.y_pos + 20), Vector2(line_end.x_pos + 20,
-                                       line_end.y_pos + 20), 5))
+                                                                      line_start.y_pos + 20),
+                                       Vector2(line_end.x_pos + 20,
+                                               line_end.y_pos + 20), 5))
                 count += 1
                 count_two += 1
             iterator += 1
@@ -159,7 +157,7 @@ def main():
             del animate_path[:]
             del drawn_path[:]
 
-        test_font = Text("Test Font", "calibri", 50, (255, 255, 255), screen, 1220, 500)
+        test_font = Text("Test Font", "calibri", 50, (255, 255, 255), screen, 1100, 400)
         pygame.draw.rect(screen, (0, 255, 0), start_square)
         pygame.draw.rect(screen, (255, 0, 0), goal_square)
         pygame.display.flip()

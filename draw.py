@@ -13,22 +13,20 @@ from visual_node import GraphVisual
 
 
 def main():
-##Init Function for application class
+#####Init Function for application class#####
     pygame.init()
     screen_width = 1360
     screen_height = 760
     screen = pygame.display.set_mode((screen_width, screen_height))
     screen.fill((0, 0, 0))
     grid = Graph(27, 19)
-    visual_graph = GraphVisual(grid, 40, screen)
     start_square = pygame.rect.Rect(1320, 640, 36, 36)
     goal_square = pygame.rect.Rect(1277, 640, 36, 36)
-    start_node = Node(Vector2(0, 9))
-    goal_node = Node(Vector2(33, 9))
+    start_node = Node(Vector2(0, 0))
+    goal_node = Node(Vector2(0, 0))
     astar = AStar(grid, start_node, goal_node)
     animate_path = []
     drawn_path = []
-    path = []
     iterator = 0
     iterator_two = 1
 
@@ -36,8 +34,9 @@ def main():
     dragging_goal = False
     mouse_is_down = False
     pressed_enter = False
-    visual_graph = GraphVisual(grid, 40, screen)
+    visual_graph = GraphVisual(astar, 40, screen)
 ########
+
 #Application update
     while True:
         screen.fill((0, 0, 0))
@@ -50,7 +49,8 @@ def main():
         pygame.event.pump()
         if event.type == pygame.MOUSEBUTTONDOWN:
             pressed_enter = False
-            path = astar.find_path
+            del astar.closed_list[:]
+            del astar.open_list[:]
             if event.button == 1:
                 if start_square.collidepoint(event.pos):
                     dragging_start = True
@@ -119,6 +119,8 @@ def main():
             for x in range(0, grid.length * grid.height):
                 if grid.nodes[x].is_traversable is False:
                     grid.nodes[x].toggle_state("wall")
+                    del astar.closed_list[:]
+                    del astar.open_list[:]
                 pressed_enter = False
 
         if pygame.key.get_pressed()[pygame.K_RETURN]:
@@ -128,7 +130,7 @@ def main():
             path = astar.find_path()
 
         if pressed_enter:
-            time.sleep(.05)
+            time.sleep(.03)
             count = 0
             count_two = 1
             if iterator_two <= len(path) - 1:
@@ -154,7 +156,7 @@ def main():
             del animate_path[:]
             del drawn_path[:]
 
-        test_font = Text("Test Font", "calibri", 50, (255, 255, 255), screen, 1090, 10)
+        test_font = Text("Test Font", "calibri", 20, (255, 255, 255), screen, 1090, 10)
         pygame.draw.rect(screen, (0, 230, 0), start_square)
         pygame.draw.rect(screen, (235, 0, 0), goal_square)
         pygame.display.flip()

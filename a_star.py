@@ -32,12 +32,14 @@ class AStar:
         self.open_list.remove(self.current_node)
 
     def find_path(self):
+        '''Function to generate a path from start to end node'''
+        #Delete open list and closed list and set all node
+        #parents to None for running AStar more than once
         del self.open_list[:]
         self.open_list.append(self.start_node)
         del self.closed_list[:]
         for node in self.grid.nodes:
             node.parent = None
-        '''Function to generate a path from start to end node'''
         while not self.closed_list.__contains__(self.goal_node) and self.open_list:
             self.find_current()
             neighbors = self.grid.get_neighbors(self.current_node)

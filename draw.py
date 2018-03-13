@@ -13,7 +13,6 @@ from visual_node import GraphVisual
 
 
 def main():
-#Vector2(17, 17)      For center of square
 ##Init Function for application class
     pygame.init()
     screen_width = 1360
@@ -45,7 +44,7 @@ def main():
         visual_graph.draw_nodes()
 
         for event in pygame.event.get():
-            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 return
 
         pygame.event.pump()
@@ -98,7 +97,6 @@ def main():
                         goal_square.left = 1277
                         goal_square.top = 640
                         dragging_goal = False
-                    #add two funcitons to astar class for assigning start and goal node
                     astar.set_start(start_node)
                     astar.set_goal(goal_node)
         elif event.type == pygame.MOUSEMOTION:
@@ -121,7 +119,6 @@ def main():
             for x in range(0, grid.length * grid.height):
                 if grid.nodes[x].is_traversable is False:
                     grid.nodes[x].toggle_state("wall")
-                    path = astar.find_path()
                 pressed_enter = False
 
         if pygame.key.get_pressed()[pygame.K_RETURN]:
@@ -157,9 +154,9 @@ def main():
             del animate_path[:]
             del drawn_path[:]
 
-        test_font = Text("Test Font", "calibri", 50, (255, 255, 255), screen, 1100, 400)
-        pygame.draw.rect(screen, (0, 255, 0), start_square)
-        pygame.draw.rect(screen, (255, 0, 0), goal_square)
+        test_font = Text("Test Font", "calibri", 50, (255, 255, 255), screen, 1090, 10)
+        pygame.draw.rect(screen, (0, 230, 0), start_square)
+        pygame.draw.rect(screen, (235, 0, 0), goal_square)
         pygame.display.flip()
 
 

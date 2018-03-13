@@ -18,6 +18,8 @@ class AStar:
 
     def set_start(self, start_node):
         self.start_node = start_node
+        self.current_node = start_node
+        self.open_list.append(start_node)
 
     def set_goal(self, goal_node):
         self.goal_node = goal_node
@@ -30,6 +32,11 @@ class AStar:
         self.open_list.remove(self.current_node)
 
     def find_path(self):
+        del self.open_list[:]
+        self.open_list.append(self.start_node)
+        del self.closed_list[:]
+        for node in self.grid.nodes:
+            node.parent = None
         '''Function to generate a path from start to end node'''
         while not self.closed_list.__contains__(self.goal_node) and self.open_list:
             self.find_current()
@@ -88,8 +95,7 @@ class AStar:
 TEST_Grid = Graph(10, 10)
 START = Node(Vector2(0, 0))
 END = Node(Vector2(9, 9))
-TEST_Grid.nodes[35].toggle_state("wall")
-TEST_Grid.nodes[45].toggle_state("wall")
+
 
 
 AI = AStar(TEST_Grid, START, END)

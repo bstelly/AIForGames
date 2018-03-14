@@ -9,7 +9,7 @@ from vector2 import Vector2
 from a_star import AStar
 from graph import Graph
 from node import Node
-from visual_node import GraphVisual
+from draw_astar_visuals import GraphVisual
 
 
 def main():
@@ -22,8 +22,8 @@ def main():
     grid = Graph(27, 19)
     start_square = pygame.rect.Rect(1320, 640, 36, 36)
     goal_square = pygame.rect.Rect(1277, 640, 36, 36)
-    start_node = Node(Vector2(0, 0))
-    goal_node = Node(Vector2(0, 0))
+    start_node = Node(None)
+    goal_node = Node(None)
     astar = AStar(grid, start_node, goal_node)
     animate_path = []
     drawn_path = []
@@ -119,8 +119,8 @@ def main():
             for x in range(0, grid.length * grid.height):
                 if grid.nodes[x].is_traversable is False:
                     grid.nodes[x].toggle_state("wall")
-                    del astar.closed_list[:]
-                    del astar.open_list[:]
+                del astar.closed_list[:]
+                del astar.open_list[:]
                 pressed_enter = False
 
         if pygame.key.get_pressed()[pygame.K_RETURN]:

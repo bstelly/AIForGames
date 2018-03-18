@@ -156,7 +156,7 @@ def main():
             del animate_path[:]
             del drawn_path[:]
 
-        test_font = Text("Test Font", "calibri", 20, (255, 255, 255), screen, 1090, 10)
+        line_one = Text("Test Font", "calibri", 20, (255, 255, 255), screen, 1090, 10)
         pygame.draw.rect(screen, (0, 230, 0), start_square)
         pygame.draw.rect(screen, (235, 0, 0), goal_square)
         pygame.display.flip()

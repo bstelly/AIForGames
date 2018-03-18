@@ -18,6 +18,7 @@ class GraphVisual(object):
         self.node_visual_colliders = []
         self.gen_visual_nodes()
 
+
     def gen_visual_nodes(self):
         count = 0
         x = 3
@@ -46,3 +47,6 @@ class GraphVisual(object):
                 node.shape.color = (50, 50, 50)
 
             node.shape.draw()
+
+    def draw_path(self, bool):
+        

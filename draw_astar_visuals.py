@@ -1,5 +1,6 @@
 import time
 from draw_utils import Rectangle
+from draw_utils import Line
 from vector2 import Vector2
 import pygame
 
@@ -17,6 +18,13 @@ class GraphVisual(object):
         self.node_visuals = []
         self.node_visual_colliders = []
         self.gen_visual_nodes()
+
+        self.animated_path = []
+        self.drawn_path = []
+        self.animate_iterator = 0
+        self.animate_iterator_two = 1
+        self.draw_counter = 0
+        self.draw_counter_two = 1
 
 
     def gen_visual_nodes(self):
@@ -48,5 +56,30 @@ class GraphVisual(object):
 
             node.shape.draw()
 
-    def draw_path(self, bool):
-        
+    def draw_path(self, boolean, path):
+        if not boolean:
+            self.animate_iterator = 0
+            self.animate_iterator_two = 1
+            del self.animated_path[:]
+            del self.drawn_path[:]
+        if boolean:
+            time.sleep(.03)
+            count = 0
+            count_two = 1
+            if self.animate_iterator_two <= len(path) - 1:
+                line_start = Vector2(path[self.animate_iterator].get_x() * 40, path[self.animate_iterator].get_y() * 40)
+                line_end = Vector2(path[self.animate_iterator_two].get_x() * 40, path[self.animate_iterator_two].get_y() * 40)
+                self.animated_path.append(Line(self.draw_surface, (255, 255, 0), Vector2(line_start.x_pos + 20,
+                                                                        line_start.y_pos + 20),
+                                        Vector2(line_end.x_pos + 20, line_end.y_pos + 20), 5))
+            while count_two <= len(self.animated_path):
+                line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
+                line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
+                self.drawn_path.append(Line(self.draw_surface, (255, 255, 0), Vector2(line_start.x_pos + 20,
+                                                                    line_start.y_pos + 20),
+                                    Vector2(line_end.x_pos + 20,
+                                            line_end.y_pos + 20), 5))
+                count += 1
+                count_two += 1
+            self.animate_iterator += 1
+            self.animate_iterator_two += 1

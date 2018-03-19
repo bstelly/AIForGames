@@ -97,7 +97,9 @@ class AStar:
 TEST_Grid = Graph(10, 10)
 START = Node(Vector2(0, 0))
 END = Node(Vector2(9, 9))
-
+TEST_Grid.nodes[89].toggle_state("wall") 
+TEST_Grid.nodes[98].toggle_state("wall") 
+TEST_Grid.nodes[88].toggle_state("wall")
 
 
 AI = AStar(TEST_Grid, START, END)

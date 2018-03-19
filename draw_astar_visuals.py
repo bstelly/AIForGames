@@ -96,6 +96,4 @@ class GraphVisual(object):
 
 
 
-
-
 #   (1090, 10)    starting position for text

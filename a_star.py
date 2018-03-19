@@ -1,5 +1,3 @@
-#pylint: disable = W0312
-#pylint: disable = E1101
 from operator import attrgetter
 from graph import Graph
 from vector2 import Vector2

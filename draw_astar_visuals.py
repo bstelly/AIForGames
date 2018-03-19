@@ -34,8 +34,8 @@ class GraphVisual(object):
         while x <= 1080:
             while y <= 760:
                 if self.astar.grid[count].is_traversable is True:
-                    new_node = NodeVisual(self.astar.grid[count], (215, 215, 215), (Vector2(x, y)), 36, 36,
-                                          self.draw_surface)
+                    new_node = NodeVisual(self.astar.grid[count], (215, 215, 215),
+                                          (Vector2(x, y)), 36, 36, self.draw_surface)
                 self.node_visuals.append(new_node)
                 self.node_visual_colliders.append(pygame.rect.Rect(x, y, 36, 36))
                 count += 1
@@ -67,18 +67,22 @@ class GraphVisual(object):
             count = 0
             count_two = 1
             if self.animate_iterator_two <= len(path) - 1:
-                line_start = Vector2(path[self.animate_iterator].get_x() * 40, path[self.animate_iterator].get_y() * 40)
-                line_end = Vector2(path[self.animate_iterator_two].get_x() * 40, path[self.animate_iterator_two].get_y() * 40)
-                self.animated_path.append(Line(self.draw_surface, (255, 255, 0), Vector2(line_start.x_pos + 20,
-                                                                        line_start.y_pos + 20),
-                                        Vector2(line_end.x_pos + 20, line_end.y_pos + 20), 5))
+                line_start = Vector2(path[self.animate_iterator].get_x() * 40,
+                                     path[self.animate_iterator].get_y() * 40)
+                line_end = Vector2(path[self.animate_iterator_two].get_x() * 40,
+                                   path[self.animate_iterator_two].get_y() * 40)
+                self.animated_path.append(Line(self.draw_surface, (255, 255, 0),
+                                               Vector2(line_start.x_pos + 20,
+                                                       line_start.y_pos + 20),
+                                               Vector2(line_end.x_pos + 20,
+                                                       line_end.y_pos + 20), 5))
             while count_two <= len(self.animated_path):
                 line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
                 line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
-                self.drawn_path.append(Line(self.draw_surface, (255, 255, 0), Vector2(line_start.x_pos + 20,
-                                                                    line_start.y_pos + 20),
-                                    Vector2(line_end.x_pos + 20,
-                                            line_end.y_pos + 20), 5))
+                self.drawn_path.append(Line(self.draw_surface, (255, 255, 0),
+                                            Vector2(line_start.x_pos + 20, line_start.y_pos + 20),
+                                            Vector2(line_end.x_pos + 20,
+                                                    line_end.y_pos + 20), 5))
                 count += 1
                 count_two += 1
             self.animate_iterator += 1

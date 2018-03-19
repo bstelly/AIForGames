@@ -29,11 +29,9 @@ class Application:
 
     def update(self):
         while True:
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                     return
-
             pygame.event.pump()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.pressed_enter = False
@@ -102,7 +100,6 @@ class Application:
                         if node.collidepoint(event.pos) and self.grid.nodes[count].is_traversable is current_state:
                             self.grid.nodes[count].toggle_state("wall")
                         count += 1
-
             if pygame.key.get_pressed()[pygame.K_c]:
                 for x in range(0, self.grid.length * self.grid.height):
                     if self.grid.nodes[x].is_traversable is False:
@@ -110,7 +107,6 @@ class Application:
                     del self.astar.closed_list[:]
                     del self.astar.open_list[:]
                     self.pressed_enter = False
-
             if pygame.key.get_pressed()[pygame.K_RETURN]:
                 self.pressed_enter = True
                 self.astar.set_start(self.start_node)

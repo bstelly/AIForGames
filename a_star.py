@@ -14,7 +14,7 @@ class AStar:
         self.goal_node = end
         self.current_node = start
         self.open_list.append(start)
-        self.path = None
+        self.path = []
 
     def set_start(self, start_node):
         self.start_node = start_node
@@ -33,13 +33,8 @@ class AStar:
 
     def find_path(self):
         '''Function to generate a path from start to end node'''
-        #Delete open list and closed list and set all node
-        #parents to None for running AStar more than once
-        del self.open_list[:]
+        self.reset()
         self.open_list.append(self.start_node)
-        del self.closed_list[:]
-        for node in self.grid.nodes:
-            node.parent = None
         while not self.closed_list.__contains__(self.goal_node) and self.open_list:
             self.find_current()
             neighbors = self.grid.get_neighbors(self.current_node)
@@ -66,42 +61,46 @@ class AStar:
                         self.closed_list.append(self.goal_node)
                         self.find_current()
         #Create the path
-        path = []
-        while self.current_node.parent:
+        if self.closed_list.__contains__(self.goal_node):
+            path = []
+            while self.current_node.parent:
+                path.append(self.current_node)
+                self.current_node = self.current_node.parent
             path.append(self.current_node)
-            self.current_node = self.current_node.parent
-        path.append(self.current_node)
-        self.path = path
-        path.reverse()
-        return path
+            self.path = path
+            path.reverse()
+            return path
 
-    def print_path(self):
-        counter = 0
+    def reset(self):
+        '''Delete open list, closed list, path, and set all node
+        parents to None for running AStar more than once'''
+        del self.open_list[:]
+        del self.closed_list[:]
+        del self.path[:]
         for node in self.grid.nodes:
-            if counter is self.grid.length:
-                print '\n',
-                counter = 0
-            if node.is_traversable is False:
-                print'[#]',
-            elif AI.start_node.position == node.position:
-                print '[S]',
-            elif AI.goal_node.position == node.position:
-                print '[G]',
-            elif AI.path.__contains__(node):
-                print '[o]',
-            else:
-                print '[ ]',
-            counter += 1
-        print 'done'
+            node.parent = None
 
-TEST_Grid = Graph(10, 10)
-START = Node(Vector2(0, 0))
-END = Node(Vector2(9, 9))
-TEST_Grid.nodes[89].toggle_state("wall") 
-TEST_Grid.nodes[98].toggle_state("wall") 
-TEST_Grid.nodes[88].toggle_state("wall")
+    def update(self, start_node, goal_node):
+        self.set_start(start_node)
+        self.set_goal(goal_node)
+        self.find_path()
 
+#    def print_path(self):
+#        counter = 0
+#        for node in self.grid.nodes:
+#            if counter is self.grid.length:
+#                print '\n',
+#                counter = 0
+#            if node.is_traversable is False:
+#                print'[#]',
+#            elif AI.start_node.position == node.position:
+#                print '[S]',
+#            elif AI.goal_node.position == node.position:
+#                print '[G]',
+#            elif AI.path.__contains__(node):
+#                print '[o]',
+#            else:
+#                print '[ ]',
+#            counter += 1
+#        print 'done'
 
-AI = AStar(TEST_Grid, START, END)
-AI.find_path()
-AI.print_path()

@@ -56,29 +56,31 @@ class GraphVisual(object):
 
             node.shape.draw()
 
-    def draw_path(self, boolean, path):
+    def draw_path(self, boolean):
         if not boolean:
             self.animate_iterator = 0
             self.animate_iterator_two = 1
             del self.animated_path[:]
             del self.drawn_path[:]
-        if boolean:
+        if boolean and len(self.astar.path) is not 0:
             time.sleep(.03)
             count = 0
             count_two = 1
-            if self.animate_iterator_two <= len(path) - 1:
-                line_start = Vector2(path[self.animate_iterator].get_x() * 40,
-                                     path[self.animate_iterator].get_y() * 40)
-                line_end = Vector2(path[self.animate_iterator_two].get_x() * 40,
-                                   path[self.animate_iterator_two].get_y() * 40)
+            if self.animate_iterator_two <= len(self.astar.path) - 1:
+                line_start = Vector2(self.astar.path[self.animate_iterator].get_x() * 40,
+                                     self.astar.path[self.animate_iterator].get_y() * 40)
+                line_end = Vector2(self.astar.path[self.animate_iterator_two].get_x() * 40,
+                                   self.astar.path[self.animate_iterator_two].get_y() * 40)
                 self.animated_path.append(Line(self.draw_surface, (255, 255, 0),
                                                Vector2(line_start.x_pos + 20,
                                                        line_start.y_pos + 20),
                                                Vector2(line_end.x_pos + 20,
                                                        line_end.y_pos + 20), 5))
             while count_two <= len(self.animated_path):
-                line_start = Vector2(path[count].get_x() * 40, path[count].get_y() * 40)
-                line_end = Vector2(path[count_two].get_x() * 40, path[count_two].get_y() * 40)
+                line_start = Vector2(self.astar.path[count].get_x() * 40,
+                                     self.astar.path[count].get_y() * 40)
+                line_end = Vector2(self.astar.path[count_two].get_x() * 40,
+                                   self.astar.path[count_two].get_y() * 40)
                 self.drawn_path.append(Line(self.draw_surface, (255, 255, 0),
                                             Vector2(line_start.x_pos + 20, line_start.y_pos + 20),
                                             Vector2(line_end.x_pos + 20,
@@ -87,3 +89,13 @@ class GraphVisual(object):
                 count_two += 1
             self.animate_iterator += 1
             self.animate_iterator_two += 1
+
+
+
+
+
+
+
+
+
+#   (1090, 10)    starting position for text

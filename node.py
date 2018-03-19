@@ -51,14 +51,10 @@ class Node:
         '''Set the parent of a node to another node'''
         self.parent = other
 
-    def toggle_state(self, state):
+    def toggle_state(self):
         '''Toggle the is_traversable variable'''
-        if state == "wall":
-            self.is_traversable = not self.is_traversable
-        if state == "goal":
-            self.is_goal = not self.is_goal
-        if state == "start":
-            self.is_start = not self.is_start
+        self.is_traversable = not self.is_traversable
+
 
     def get_x(self):
         return self.position.x_pos

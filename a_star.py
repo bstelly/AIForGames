@@ -82,23 +82,3 @@ class AStar:
         self.set_start(start_node)
         self.set_goal(goal_node)
         self.find_path()
-
-#    def print_path(self):
-#        counter = 0
-#        for node in self.grid.nodes:
-#            if counter is self.grid.length:
-#                print '\n',
-#                counter = 0
-#            if node.is_traversable is False:
-#                print'[#]',
-#            elif AI.start_node.position == node.position:
-#                print '[S]',
-#            elif AI.goal_node.position == node.position:
-#                print '[G]',
-#            elif AI.path.__contains__(node):
-#                print '[o]',
-#            else:
-#                print '[ ]',
-#            counter += 1
-#        print 'done'
-

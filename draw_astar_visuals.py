@@ -3,7 +3,9 @@ import time
 from node import Node
 from draw_utils import Rectangle
 from draw_utils import Line
+from draw_utils import Text
 from vector2 import Vector2
+
 class NodeVisual(object):
     def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface):
         self.node = node
@@ -102,6 +104,9 @@ class GraphVisual(object):
             self.animate_iterator += 1
             self.animate_iterator_two += 1
 
+    def draw_text(self):
+        line_one = Text("Test Font", "calibri", 20, (255, 255, 255), self.draw_surface, 1090, 10)
+
 
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -172,6 +177,9 @@ class GraphVisual(object):
         if pygame.key.get_pressed()[pygame.K_RETURN]:
             self.pressed_enter = True
             self.astar.update(self.astar.start_node, self.astar.goal_node)
+        self.draw_nodes()
+        self.draw_text()
+        self.draw_path()
 
     def clear_grid(self):
         for x in range(0, self.astar.grid.length * self.astar.grid.height):
@@ -181,4 +189,3 @@ class GraphVisual(object):
         self.pressed_enter = False
 
 
-#   line_one = Text("Test Font", "calibri", 20, (255, 255, 255), screen, 1090, 10)

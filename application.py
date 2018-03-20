@@ -27,12 +27,7 @@ class Application:
             pygame.event.pump()
             current_event = event
             self.visual_graph.update(current_event)
-            self.draw()
-
-    def draw(self):
-        self.visual_graph.draw_nodes()
-        self.visual_graph.draw_path()
-        pygame.display.flip()
+            pygame.display.flip()
 
 
 astar_application = Application(1360, 760)

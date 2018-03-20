@@ -27,6 +27,9 @@ class GraphVisual(object):
         self.animate_iterator_two = 1
         self.draw_counter = 0
         self.draw_counter_two = 1
+        self.closed_list_drawn = 0
+        self.closed_list_animated = 0
+        self.closed_list_done = False
 
         self.dragging_start = False
         self.dragging_goal = False
@@ -61,14 +64,13 @@ class GraphVisual(object):
                 node.shape.color = (0, 0, 0)
             elif self.astar.open_list.__contains__(node.node):
                 node.shape.color = (0, 255, 255)
-            elif self.astar.closed_list.__contains__(node.node):
-                node.shape.color = (0, 0, 220)
+#            elif self.astar.closed_list.__contains__(node.node):
+#                node.shape.color = (0, 0, 220)
             else:
-                node.shape.color = (50, 50, 50)
+                if not self.astar.closed_list.__contains__(node.node):
+                    node.shape.color = (50, 50, 50)
 
             node.shape.draw()
-        pygame.draw.rect(self.draw_surface, (0, 230, 0), self.start_square)
-        pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
 
     def draw_path(self):
         if not self.pressed_enter:
@@ -175,11 +177,16 @@ class GraphVisual(object):
         if pygame.key.get_pressed()[pygame.K_c]:
             self.clear_grid()
         if pygame.key.get_pressed()[pygame.K_RETURN]:
+            self.closed_list_done = False
             self.pressed_enter = True
             self.astar.update(self.astar.start_node, self.astar.goal_node)
         self.draw_nodes()
+        self.draw_closed_list()
         self.draw_text()
-        self.draw_path()
+        if self.closed_list_done is True:
+            self.draw_path()
+        pygame.draw.rect(self.draw_surface, (0, 230, 0), self.start_square)
+        pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
 
     def clear_grid(self):
         for x in range(0, self.astar.grid.length * self.astar.grid.height):
@@ -188,4 +195,22 @@ class GraphVisual(object):
         self.astar.reset()
         self.pressed_enter = False
 
+
+    def draw_closed_list(self):
+        if self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list):
+            self.closed_list_drawn = 0
+            for node in self.node_visuals:
+                if self.astar.closed_list[self.closed_list_animated].position == node.node.position:
+                    node.shape.color = (0, 0, 220)
+                    node.shape.draw()
+            self.closed_list_animated += 1
+
+            while self.closed_list_drawn < self.closed_list_animated:
+                for node in self.node_visuals:
+                    if self.astar.closed_list.__contains__(node.node):
+                        node.shape.draw()
+                        self.closed_list_drawn += 1
+        else:
+            self.closed_list_animated = 0
+            self.closed_list_done = True
 

@@ -67,7 +67,7 @@ def main():
                     for node in visual_graph.node_visual_colliders:
                         if node.collidepoint(event.pos) and mouse_is_down is False:
                             current_state = grid.nodes[count].is_traversable
-                            grid.nodes[count].toggle_state("wall")
+                            grid.nodes[count].toggle_state()
                             mouse_is_down = True
                         count += 1
         elif event.type == pygame.MOUSEBUTTONUP:
@@ -112,7 +112,7 @@ def main():
                 count = 0
                 for node in visual_graph.node_visual_colliders:
                     if node.collidepoint(event.pos) and grid.nodes[count].is_traversable is current_state:
-                        grid.nodes[count].toggle_state("wall")
+                        grid.nodes[count].toggle_state()
                     count += 1
 
         if pygame.key.get_pressed()[pygame.K_c]:

@@ -30,6 +30,7 @@ class GraphVisual(object):
         self.closed_list_drawn = 0
         self.closed_list_animated = 0
         self.closed_list_done = False
+        self.closed_list_nodes = []
 
         self.dragging_start = False
         self.dragging_goal = False
@@ -64,13 +65,12 @@ class GraphVisual(object):
                 node.shape.color = (0, 0, 0)
             elif self.astar.open_list.__contains__(node.node):
                 node.shape.color = (0, 255, 255)
-#            elif self.astar.closed_list.__contains__(node.node):
-#                node.shape.color = (0, 0, 220)
             else:
                 if not self.astar.closed_list.__contains__(node.node):
                     node.shape.color = (50, 50, 50)
-
             node.shape.draw()
+        self.sort_visual_nodes_in_closed_list()
+
 
     def draw_path(self):
         if not self.pressed_enter:
@@ -195,21 +195,28 @@ class GraphVisual(object):
         self.astar.reset()
         self.pressed_enter = False
 
+    def sort_visual_nodes_in_closed_list(self):
+        done = False
+        count = 0
+        while not done:
+            if count < len(self.astar.closed_list) - 1:
+                for node in self.node_visuals:
+                    if node.node.position == self.astar.closed_list[count].position:
+                        self.closed_list_nodes.append(node)
+                        count += 1
+            else:
+                done = True
 
     def draw_closed_list(self):
         if self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list):
             self.closed_list_drawn = 0
-            for node in self.node_visuals:
-                if self.astar.closed_list[self.closed_list_animated].position == node.node.position:
-                    node.shape.color = (0, 0, 220)
-                    node.shape.draw()
+            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 220)
+            self.closed_list_nodes[self.closed_list_animated].shape.draw()
             self.closed_list_animated += 1
 
             while self.closed_list_drawn < self.closed_list_animated:
-                for node in self.node_visuals:
-                    if self.astar.closed_list.__contains__(node.node):
-                        node.shape.draw()
-                        self.closed_list_drawn += 1
+                self.closed_list_nodes[self.closed_list_drawn].shape.draw()
+                self.closed_list_drawn += 1
         else:
             self.closed_list_animated = 0
             self.closed_list_done = True

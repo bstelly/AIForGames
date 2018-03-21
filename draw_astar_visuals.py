@@ -25,8 +25,6 @@ class GraphVisual(object):
         self.drawn_path = []
         self.animate_iterator = 0
         self.animate_iterator_two = 1
-        self.draw_counter = 0
-        self.draw_counter_two = 1
         self.closed_list_drawn = 0
         self.closed_list_animated = 0
         self.closed_list_done = False
@@ -63,11 +61,12 @@ class GraphVisual(object):
         for node in self.node_visuals:
             if not node.node.is_traversable:
                 node.shape.color = (0, 0, 0)
-            elif self.astar.open_list.__contains__(node.node):
-                node.shape.color = (0, 255, 255)
             else:
                 if not self.astar.closed_list.__contains__(node.node):
                     node.shape.color = (50, 50, 50)
+            if self.closed_list_done is True:
+                if self.astar.open_list.__contains__(node.node):
+                    node.shape.color = (0, 255, 255)
             node.shape.draw()
         self.sort_visual_nodes_in_closed_list()
 
@@ -79,7 +78,7 @@ class GraphVisual(object):
             del self.animated_path[:]
             del self.drawn_path[:]
         if self.pressed_enter and len(self.astar.path) is not 0:
-            time.sleep(.03)
+            #time.sleep(.01)
             count = 0
             count_two = 1
             if self.animate_iterator_two <= len(self.astar.path) - 1:
@@ -109,6 +108,40 @@ class GraphVisual(object):
     def draw_text(self):
         line_one = Text("Test Font", "calibri", 20, (255, 255, 255), self.draw_surface, 1090, 10)
 
+
+    def clear_grid(self):
+        for x in range(0, self.astar.grid.length * self.astar.grid.height):
+            if self.astar.grid.nodes[x].is_traversable is False:
+                self.astar.grid.nodes[x].toggle_state()
+        self.astar.reset()
+        self.pressed_enter = False
+
+    def sort_visual_nodes_in_closed_list(self):
+        done = False
+        count = 0
+        while not done:
+            if count < len(self.astar.closed_list) - 1:
+                for node in self.node_visuals:
+                    if node.node.position == self.astar.closed_list[count].position:
+                        self.closed_list_nodes.append(node)
+                        count += 1
+            else:
+                done = True
+
+    def draw_closed_list(self):
+        if self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list):
+            self.closed_list_drawn = 0
+            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 220)
+            self.closed_list_nodes[self.closed_list_animated].shape.draw()
+            self.closed_list_animated += 1
+
+            while self.closed_list_drawn < self.closed_list_animated:
+                self.closed_list_nodes[self.closed_list_drawn].shape.draw()
+                self.closed_list_drawn += 1
+        else:
+            self.closed_list_animated = 0
+            self.closed_list_done = True
+            del self.closed_list_nodes[:]
 
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -141,13 +174,13 @@ class GraphVisual(object):
                     self.start_square.top = self.node_visual_colliders[count].top
                     self.dragging_start = False
                     self.astar.start_node = Node(Vector2(self.node_visuals[count].node.get_x(),
-                                            self.node_visuals[count].node.get_y()))
+                                                         self.node_visuals[count].node.get_y()))
                 if self.goal_square.colliderect(collider):
                     self.goal_square.left = self.node_visual_colliders[count].left
                     self.goal_square.top = self.node_visual_colliders[count].top
                     self.dragging_goal = False
                     self.astar.goal_node = Node(Vector2(self.node_visuals[count].node.get_x(),
-                                            self.node_visuals[count].node.get_y()))
+                                                        self.node_visuals[count].node.get_y()))
                 count += 1
             if self.dragging_start is True:
                 self.start_square.left = 1320
@@ -187,37 +220,4 @@ class GraphVisual(object):
             self.draw_path()
         pygame.draw.rect(self.draw_surface, (0, 230, 0), self.start_square)
         pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
-
-    def clear_grid(self):
-        for x in range(0, self.astar.grid.length * self.astar.grid.height):
-            if self.astar.grid.nodes[x].is_traversable is False:
-                self.astar.grid.nodes[x].toggle_state()
-        self.astar.reset()
-        self.pressed_enter = False
-
-    def sort_visual_nodes_in_closed_list(self):
-        done = False
-        count = 0
-        while not done:
-            if count < len(self.astar.closed_list) - 1:
-                for node in self.node_visuals:
-                    if node.node.position == self.astar.closed_list[count].position:
-                        self.closed_list_nodes.append(node)
-                        count += 1
-            else:
-                done = True
-
-    def draw_closed_list(self):
-        if self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list):
-            self.closed_list_drawn = 0
-            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 220)
-            self.closed_list_nodes[self.closed_list_animated].shape.draw()
-            self.closed_list_animated += 1
-
-            while self.closed_list_drawn < self.closed_list_animated:
-                self.closed_list_nodes[self.closed_list_drawn].shape.draw()
-                self.closed_list_drawn += 1
-        else:
-            self.closed_list_animated = 0
-            self.closed_list_done = True
 

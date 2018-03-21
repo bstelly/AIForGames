@@ -7,7 +7,6 @@ from a_star import AStar
 from vector2 import Vector2
 from draw_astar_visuals import GraphVisual
 
-
 class Application:
     def __init__(self, width, height):
         pygame.init()
@@ -28,7 +27,6 @@ class Application:
             current_event = event
             self.visual_graph.update(current_event)
             pygame.display.flip()
-
 
 astar_application = Application(1360, 760)
 astar_application.update()

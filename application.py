@@ -7,6 +7,7 @@ from a_star import AStar
 from vector2 import Vector2
 from draw_astar_visuals import GraphVisual
 
+
 class Application:
     def __init__(self, width, height):
         pygame.init()

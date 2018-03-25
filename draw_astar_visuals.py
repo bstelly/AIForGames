@@ -27,14 +27,17 @@ class GraphVisual(object):
         self.animate_iterator_two = 1
         self.closed_list_drawn = 0
         self.closed_list_animated = 0
-        self.closed_list_done = False
         self.closed_list_nodes = []
+        self.parents = []
 
         self.dragging_start = False
         self.dragging_goal = False
         self.mouse_is_down = False
         self.pressed_enter = False
         self.current_state = False
+        self.closed_list_done = False
+        self.draw_parents_done = True
+
         self.offset_x = 0
         self.offset_y = 0
 
@@ -143,6 +146,21 @@ class GraphVisual(object):
             self.closed_list_done = True
             del self.closed_list_nodes[:]
 
+    def draw_parents(self):
+        if not self.parents:
+            for node in self.node_visuals:
+                if self.astar.open_list.__contains__(node) or self.astar.closed_list.__contains__(node):
+                    new_line = Line(self.draw_surface, (255, 100, 0), node.node.position, node.node.parent.position, 3)
+                    self.parents.append(new_line)
+                    self.draw_parents_done = True
+        if self.parents:
+            for line in self.parents:
+                line.draw()
+    
+        
+            
+                
+
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.pressed_enter = False
@@ -218,6 +236,9 @@ class GraphVisual(object):
         self.draw_text()
         if self.closed_list_done is True:
             self.draw_path()
+            if self.draw_parents_done is False:
+                self.draw_parents()
         pygame.draw.rect(self.draw_surface, (0, 230, 0), self.start_square)
         pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
 
+ 

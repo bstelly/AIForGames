@@ -37,6 +37,7 @@ class GraphVisual(object):
         self.current_state = False
         self.closed_list_done = False
         self.toggle_shift = False
+        self.toggle_ctrl = False
 
         self.offset_x = 0
         self.offset_y = 0
@@ -125,7 +126,7 @@ class GraphVisual(object):
         done = False
         count = 0
         while not done:
-            if count < len(self.astar.closed_list) - 1:
+            if count < len(self.astar.closed_list) - 2:
                 for node in self.node_visuals:
                     if node.node.position == self.astar.closed_list[count].position:
                         self.closed_list_nodes.append(node)
@@ -161,6 +162,15 @@ class GraphVisual(object):
         if self.parents:
             for line in self.parents:
                 line.draw()
+
+    def draw_node_information(self):
+        color = (128, 128, 128)
+        font = "impact"
+        for node in self.node_visuals:
+            if self.astar.closed_list.__contains__(node.node) or self.astar.open_list.__contains__(node.node):
+                gscore_text = Text("G = " + str(node.node.g_score), font, 12, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos - 1)
+                hscore_text = Text("H = " + str(node.node.h_score), font, 12, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 10)
+                fscore_text = Text("F = " + str(node.node.f_score), font, 12, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 21)
 
 
     def update(self, event):
@@ -237,15 +247,20 @@ class GraphVisual(object):
             self.astar.update(self.astar.start_node, self.astar.goal_node)
         if pygame.key.get_mods() & pygame.KMOD_SHIFT:
             self.toggle_shift = not self.toggle_shift
-            time.sleep(.5)
+            time.sleep(.3)
+        if pygame.key.get_mods() & pygame.KMOD_CTRL:
+            self.toggle_ctrl = not self.toggle_ctrl
+            time.sleep(.3)
         self.draw_nodes()
         self.draw_closed_list()
         self.draw_text()
-        if self.closed_list_done is True:
+        if self.closed_list_done:
             self.draw_path()
         if self.toggle_shift:
             self.draw_parents()
         pygame.draw.rect(self.draw_surface, (0, 230, 0), self.start_square)
         pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
+        if self.toggle_ctrl:
+            self.draw_node_information()
 
  

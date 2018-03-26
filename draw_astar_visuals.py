@@ -36,7 +36,7 @@ class GraphVisual(object):
         self.pressed_enter = False
         self.current_state = False
         self.closed_list_done = False
-        self.draw_parents_done = True
+        self.toggle_shift = False
 
         self.offset_x = 0
         self.offset_y = 0
@@ -50,7 +50,7 @@ class GraphVisual(object):
         y = 3
         while x <= 1080:
             while y <= 760:
-                if self.astar.grid[count].is_traversable is True:
+                if self.astar.grid[count].traversable is True:
                     new_node = NodeVisual(self.astar.grid[count], (215, 215, 215),
                                           (Vector2(x, y)), 36, 36, self.draw_surface)
                 self.node_visuals.append(new_node)
@@ -62,7 +62,7 @@ class GraphVisual(object):
 
     def draw_nodes(self):
         for node in self.node_visuals:
-            if not node.node.is_traversable:
+            if not node.node.traversable:
                 node.shape.color = (0, 0, 0)
             else:
                 if not self.astar.closed_list.__contains__(node.node):
@@ -114,10 +114,12 @@ class GraphVisual(object):
 
     def clear_grid(self):
         for x in range(0, self.astar.grid.length * self.astar.grid.height):
-            if self.astar.grid.nodes[x].is_traversable is False:
+            if self.astar.grid.nodes[x].traversable is False:
                 self.astar.grid.nodes[x].toggle_state()
         self.astar.reset()
         self.pressed_enter = False
+        self.pressed_shift = False
+        del self.parents[:]
 
     def sort_visual_nodes_in_closed_list(self):
         done = False
@@ -147,24 +149,26 @@ class GraphVisual(object):
             del self.closed_list_nodes[:]
 
     def draw_parents(self):
-        if not self.parents:
-            for node in self.node_visuals:
-                if self.astar.open_list.__contains__(node) or self.astar.closed_list.__contains__(node):
-                    new_line = Line(self.draw_surface, (255, 100, 0), node.node.position, node.node.parent.position, 3)
-                    self.parents.append(new_line)
-                    self.draw_parents_done = True
+        for node in self.node_visuals:
+            if self.astar.open_list.__contains__(node.node) or self.astar.closed_list.__contains__(node.node):
+                new_line = Line(self.draw_surface, (255, 100, 0),
+                                Vector2(node.shape.position.x_pos + 17,
+                                        node.shape.position.y_pos + 17),
+                                Vector2(node.node.parent.get_x() * 40 + 20,
+                                        node.node.parent.get_y() * 40 + 20), 3)
+
+                self.parents.append(new_line)
         if self.parents:
             for line in self.parents:
                 line.draw()
-    
-        
-            
-                
+
 
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.pressed_enter = False
+            self.toggle_shift = False
             self.astar.reset()
+            del self.parents[:]
             if self.start_square.collidepoint(event.pos):
                 self.dragging_start = True
                 mouse_x, mouse_y = event.pos
@@ -179,7 +183,7 @@ class GraphVisual(object):
                 count = 0
                 for node in self.node_visual_colliders:
                     if node.collidepoint(event.pos) and self.mouse_is_down is False:
-                        self.current_state = self.astar.grid.nodes[count].is_traversable
+                        self.current_state = self.astar.grid.nodes[count].traversable
                         self.astar.grid.nodes[count].toggle_state()
                         self.mouse_is_down = True
                     count += 1
@@ -222,7 +226,7 @@ class GraphVisual(object):
             elif self.mouse_is_down:
                 count = 0
                 for node in self.node_visual_colliders:
-                    if node.collidepoint(event.pos) and self.astar.grid.nodes[count].is_traversable is self.current_state:
+                    if node.collidepoint(event.pos) and self.astar.grid.nodes[count].traversable is self.current_state:
                         self.astar.grid.nodes[count].toggle_state()
                     count += 1
         if pygame.key.get_pressed()[pygame.K_c]:
@@ -231,13 +235,16 @@ class GraphVisual(object):
             self.closed_list_done = False
             self.pressed_enter = True
             self.astar.update(self.astar.start_node, self.astar.goal_node)
+        if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+            self.toggle_shift = not self.toggle_shift
+            time.sleep(.5)
         self.draw_nodes()
         self.draw_closed_list()
         self.draw_text()
         if self.closed_list_done is True:
             self.draw_path()
-            if self.draw_parents_done is False:
-                self.draw_parents()
+        if self.toggle_shift:
+            self.draw_parents()
         pygame.draw.rect(self.draw_surface, (0, 230, 0), self.start_square)
         pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
 

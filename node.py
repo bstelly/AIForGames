@@ -10,11 +10,11 @@ class Node:
         self.h_score = 0
         self.f_score = 0
         self.parent = None
-        self.is_traversable = True
+        self.traversable = True
         self.is_goal = False
         self.is_start = False
 
-    def calc_g_score(self, other):
+    def calculate_g_score(self, other):
         '''Calculates the G-Score for a node'''
         #Find the g-Score for a neighbor that has just been discovered
         if self.parent is None:
@@ -38,12 +38,12 @@ class Node:
             else:
                 self.g_score = self.g_score
 
-    def calc_h_score(self, other):
+    def calculate_h_score(self, other):
         '''Calculates the H-Score for a node'''
         distance = self.position.distance(other.position)
         self.h_score = distance * 10
 
-    def calc_f_score(self):
+    def calculate_f_score(self):
         '''Calculates the F-Score for a node'''
         self.f_score = self.g_score + self.h_score
 
@@ -53,7 +53,7 @@ class Node:
 
     def toggle_state(self):
         '''Toggle the is_traversable variable'''
-        self.is_traversable = not self.is_traversable
+        self.traversable = not self.traversable
 
 
     def get_x(self):

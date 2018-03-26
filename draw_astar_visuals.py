@@ -70,7 +70,7 @@ class GraphVisual(object):
                     node.shape.color = (50, 50, 50)
             if self.closed_list_done is True:
                 if self.astar.open_list.__contains__(node.node):
-                    node.shape.color = (0, 255, 255)
+                    node.shape.color = (0, 0, 130)
             node.shape.draw()
         self.sort_visual_nodes_in_closed_list()
 
@@ -90,7 +90,7 @@ class GraphVisual(object):
                                      self.astar.path[self.animate_iterator].get_y() * 40)
                 line_end = Vector2(self.astar.path[self.animate_iterator_two].get_x() * 40,
                                    self.astar.path[self.animate_iterator_two].get_y() * 40)
-                self.animated_path.append(Line(self.draw_surface, (255, 255, 0),
+                self.animated_path.append(Line(self.draw_surface, (255, 240, 0),
                                                Vector2(line_start.x_pos + 20,
                                                        line_start.y_pos + 20),
                                                Vector2(line_end.x_pos + 20,
@@ -100,7 +100,7 @@ class GraphVisual(object):
                                      self.astar.path[count].get_y() * 40)
                 line_end = Vector2(self.astar.path[count_two].get_x() * 40,
                                    self.astar.path[count_two].get_y() * 40)
-                self.drawn_path.append(Line(self.draw_surface, (255, 255, 0),
+                self.drawn_path.append(Line(self.draw_surface, (255, 240, 0),
                                             Vector2(line_start.x_pos + 20, line_start.y_pos + 20),
                                             Vector2(line_end.x_pos + 20,
                                                     line_end.y_pos + 20), 5))
@@ -137,7 +137,7 @@ class GraphVisual(object):
     def draw_closed_list(self):
         if self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list):
             self.closed_list_drawn = 0
-            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 220)
+            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 255)
             self.closed_list_nodes[self.closed_list_animated].shape.draw()
             self.closed_list_animated += 1
 
@@ -164,13 +164,13 @@ class GraphVisual(object):
                 line.draw()
 
     def draw_node_information(self):
-        color = (128, 128, 128)
+        color = (0, 150, 0)
         font = "impact"
         for node in self.node_visuals:
             if self.astar.closed_list.__contains__(node.node) or self.astar.open_list.__contains__(node.node):
-                gscore_text = Text("G = " + str(node.node.g_score), font, 12, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos - 1)
-                hscore_text = Text("H = " + str(node.node.h_score), font, 12, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 10)
-                fscore_text = Text("F = " + str(node.node.f_score), font, 12, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 21)
+                gscore_text = Text("G = " + str(node.node.g_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos - 1)
+                hscore_text = Text("H = " + str(node.node.h_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 10)
+                fscore_text = Text("F = " + str(node.node.f_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 21)
 
 
     def update(self, event):
@@ -225,6 +225,8 @@ class GraphVisual(object):
             self.astar.set_start(self.astar.start_node)
             self.astar.set_goal(self.astar.goal_node)
         elif event.type == pygame.MOUSEMOTION:
+
+                    
             if self.dragging_start:
                 mouse_x, mouse_y = event.pos
                 self.start_square.x = mouse_x + self.offset_x

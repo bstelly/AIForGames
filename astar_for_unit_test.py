@@ -5,6 +5,12 @@ from graph import Graph
 from vector2 import Vector2
 
 class AStar:
+            
+    #Prototype: def __init__(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def __init__(self):
         self.grid = None
         self.open_list = []
@@ -13,13 +19,24 @@ class AStar:
         self.goal_node = None
         self.current_node = None
         self.path = None
-
+        
+    #Prototype: def find_current(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def find_current(self):
         '''Function to find the current node in the path
         the current node gets added to the closed list and then removed from the open list'''
         self.current_node = min(self.open_list, key=attrgetter('f_score'))
         self.closed_list.append(self.current_node)
         self.open_list.remove(self.current_node)
+
+    #Prototype: def find_path(self, start, goal, graph)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def find_path(self, start, goal, graph):
         '''Function to generate a path from start to end node'''
         self.start_node = start

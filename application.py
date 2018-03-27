@@ -9,6 +9,12 @@ from draw_astar_visuals import GraphVisual
 
 
 class Application:
+        
+    #Prototype: def __init__(self, width, height)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def __init__(self, width, height):
         pygame.init()
         self.grid = Graph(27, 19)
@@ -18,6 +24,11 @@ class Application:
         self.astar = AStar(self.grid, self.start_node, self.goal_node)
         self.visual_graph = GraphVisual(self.astar, 40, self.screen)
 
+    #Prototype: def update(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def update(self):
         while True:
             for event in pygame.event.get():

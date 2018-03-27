@@ -7,12 +7,24 @@ from draw_utils import Text
 from vector2 import Vector2
 
 class NodeVisual(object):
+        
+    #Prototype: def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface):
         self.node = node
         self.shape = Rectangle(draw_surface, color, draw_pos,
                                scale_x, scale_y)
 
 class GraphVisual(object):
+                
+    #Prototype: def __init__(self, astar, node_offset, draw_surface)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def __init__(self, astar, node_offset, draw_surface):
         self.astar = astar
         self.node_offset = node_offset
@@ -46,7 +58,12 @@ class GraphVisual(object):
         self.start_square = pygame.rect.Rect(1320, 640, 36, 36)
         self.goal_square = pygame.rect.Rect(1277, 640, 36, 36)
         self.draw_text()
-
+    
+    #Prototype: def gen_visual_nodes(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def gen_visual_nodes(self):
         count = 0
         x = 3
@@ -62,7 +79,12 @@ class GraphVisual(object):
                 y += self.node_offset
             x += self.node_offset
             y = 3
-
+    
+    #Prototype: def draw_nodes(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def draw_nodes(self):
         if self.closed_list_done and self.path_done:
             for node in self.node_visuals:
@@ -77,7 +99,12 @@ class GraphVisual(object):
                 node.shape.draw()
         self.sort_visual_nodes_in_closed_list()
 
-
+    
+    #Prototype: def draw_path(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def draw_path(self):
         if not self.pressed_enter:
             self.animate_iterator = 0
@@ -113,12 +140,22 @@ class GraphVisual(object):
                 count_two += 1
             self.animate_iterator += 1
             self.animate_iterator_two += 1
-
+        
+    #Prototype: def draw_text(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def draw_text(self):
     #LEFT SIDE (1090)
         line_one = Text("A-STAR Algorithm", "arial black", 27, (255, 255, 255), self.draw_surface, 1090, 10)
 
-
+        
+    #Prototype: def clear_grid(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def clear_grid(self):
         for x in range(0, self.astar.grid.length * self.astar.grid.height):
             if self.astar.grid.nodes[x].traversable is False:
@@ -127,11 +164,21 @@ class GraphVisual(object):
         self.pressed_enter = False
         self.pressed_shift = False
         del self.parents[:]
-
+        
+    #Prototype: def clear_screen(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def clear_screen(self):
         self.draw_surface.fill((0, 0, 0))
         self.draw_text()
-
+        
+    #Prototype: def sort_visual_nodes_in_closed_list(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def sort_visual_nodes_in_closed_list(self):
         if self.astar.closed_list:
             done = False
@@ -144,7 +191,12 @@ class GraphVisual(object):
                             count += 1
                     else:
                         done = True
-
+        
+    #Prototype: def draw_closed_list(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def draw_closed_list(self):
         if (self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list)
             and self.closed_list_nodes):
@@ -159,7 +211,12 @@ class GraphVisual(object):
         else:
             self.closed_list_done = True
             del self.closed_list_nodes[:]
-
+        
+    #Prototype: def draw_parents(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def draw_parents(self):
         for node in self.node_visuals:
             if self.astar.open_list.__contains__(node.node) or self.astar.closed_list.__contains__(node.node):
@@ -173,7 +230,12 @@ class GraphVisual(object):
         if self.parents:
             for line in self.parents:
                 line.draw()
-
+        
+    #Prototype: def draw_node_information(self)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def draw_node_information(self):
         color = (0, 150, 0)
         font = "impact"
@@ -183,7 +245,12 @@ class GraphVisual(object):
                 hscore_text = Text("H = " + str(node.node.h_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 10)
                 fscore_text = Text("F = " + str(node.node.f_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 21)
 
-
+        
+    #Prototype: def update(self, event)
+    #Arguments: 
+    #Description: 
+    #Precondition: 
+    #Postcondition: 
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.path_done = True

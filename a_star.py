@@ -60,6 +60,7 @@ class AStar:
                         self.find_current()
         #Create the path
         if self.closed_list.__contains__(self.goal_node):
+            self.start_node.g_score = 0
             path = []
             while self.current_node.parent:
                 path.append(self.current_node)

@@ -20,7 +20,6 @@ class Application:
 
     def update(self):
         while True:
-            self.screen.fill((0, 0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or pygame.key.get_pressed()[pygame.K_ESCAPE]:
                     return

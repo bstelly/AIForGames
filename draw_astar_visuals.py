@@ -38,12 +38,14 @@ class GraphVisual(object):
         self.closed_list_done = False
         self.toggle_shift = False
         self.toggle_ctrl = False
+        self.path_done = True
 
         self.offset_x = 0
         self.offset_y = 0
 
         self.start_square = pygame.rect.Rect(1320, 640, 36, 36)
         self.goal_square = pygame.rect.Rect(1277, 640, 36, 36)
+        self.draw_text()
 
     def gen_visual_nodes(self):
         count = 0
@@ -62,16 +64,17 @@ class GraphVisual(object):
             y = 3
 
     def draw_nodes(self):
-        for node in self.node_visuals:
-            if not node.node.traversable:
-                node.shape.color = (0, 0, 0)
-            else:
-                if not self.astar.closed_list.__contains__(node.node):
-                    node.shape.color = (50, 50, 50)
-            if self.closed_list_done is True:
-                if self.astar.open_list.__contains__(node.node):
-                    node.shape.color = (0, 0, 130)
-            node.shape.draw()
+        if self.closed_list_done and self.path_done:
+            for node in self.node_visuals:
+                if not node.node.traversable:
+                    node.shape.color = (0, 0, 0)
+                else:
+                    if not self.astar.closed_list.__contains__(node.node):
+                        node.shape.color = (50, 50, 50)
+                if self.closed_list_done is True:
+                    if self.astar.open_list.__contains__(node.node):
+                        node.shape.color = (0, 0, 75)
+                node.shape.draw()
         self.sort_visual_nodes_in_closed_list()
 
 
@@ -82,7 +85,7 @@ class GraphVisual(object):
             del self.animated_path[:]
             del self.drawn_path[:]
         if self.pressed_enter and len(self.astar.path) is not 0:
-            #time.sleep(.01)
+            time.sleep(.01)
             count = 0
             count_two = 1
             if self.animate_iterator_two <= len(self.astar.path) - 1:
@@ -94,7 +97,7 @@ class GraphVisual(object):
                                                Vector2(line_start.x_pos + 20,
                                                        line_start.y_pos + 20),
                                                Vector2(line_end.x_pos + 20,
-                                                       line_end.y_pos + 20), 5))
+                                                       line_end.y_pos + 20), 11))
             while count_two <= len(self.animated_path):
                 line_start = Vector2(self.astar.path[count].get_x() * 40,
                                      self.astar.path[count].get_y() * 40)
@@ -103,14 +106,17 @@ class GraphVisual(object):
                 self.drawn_path.append(Line(self.draw_surface, (255, 240, 0),
                                             Vector2(line_start.x_pos + 20, line_start.y_pos + 20),
                                             Vector2(line_end.x_pos + 20,
-                                                    line_end.y_pos + 20), 5))
+                                                    line_end.y_pos + 20), 11))
+                if len(self.animated_path) == len(self.astar.path) - 1:
+                    self.path_done = True
                 count += 1
                 count_two += 1
             self.animate_iterator += 1
             self.animate_iterator_two += 1
 
     def draw_text(self):
-        line_one = Text("Test Font", "calibri", 20, (255, 255, 255), self.draw_surface, 1090, 10)
+    #LEFT SIDE (1090)
+        line_one = Text("A-STAR Algorithm", "arial black", 27, (255, 255, 255), self.draw_surface, 1090, 10)
 
 
     def clear_grid(self):
@@ -122,22 +128,28 @@ class GraphVisual(object):
         self.pressed_shift = False
         del self.parents[:]
 
+    def clear_screen(self):
+        self.draw_surface.fill((0, 0, 0))
+        self.draw_text()
+
     def sort_visual_nodes_in_closed_list(self):
-        done = False
-        count = 0
-        while not done:
-            if count < len(self.astar.closed_list) - 2:
+        if self.astar.closed_list:
+            done = False
+            count = 0
+            while not done:
                 for node in self.node_visuals:
-                    if node.node.position == self.astar.closed_list[count].position:
-                        self.closed_list_nodes.append(node)
-                        count += 1
-            else:
-                done = True
+                    if count < len(self.astar.closed_list):
+                        if node.node.position == self.astar.closed_list[count].position:
+                            self.closed_list_nodes.append(node)
+                            count += 1
+                    else:
+                        done = True
 
     def draw_closed_list(self):
-        if self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list):
+        if (self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list)
+            and self.closed_list_nodes):
             self.closed_list_drawn = 0
-            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 255)
+            self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 180)
             self.closed_list_nodes[self.closed_list_animated].shape.draw()
             self.closed_list_animated += 1
 
@@ -145,7 +157,6 @@ class GraphVisual(object):
                 self.closed_list_nodes[self.closed_list_drawn].shape.draw()
                 self.closed_list_drawn += 1
         else:
-            self.closed_list_animated = 0
             self.closed_list_done = True
             del self.closed_list_nodes[:]
 
@@ -175,8 +186,9 @@ class GraphVisual(object):
 
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
+            self.path_done = True
+            self.clear_screen()
             self.pressed_enter = False
-            self.toggle_shift = False
             self.astar.reset()
             del self.parents[:]
             if self.start_square.collidepoint(event.pos):
@@ -198,6 +210,7 @@ class GraphVisual(object):
                         self.mouse_is_down = True
                     count += 1
         if event.type == pygame.MOUSEBUTTONUP:
+            self.clear_screen()
             self.mouse_is_down = False
             count = 0
             for collider in self.node_visual_colliders:
@@ -225,13 +238,13 @@ class GraphVisual(object):
             self.astar.set_start(self.astar.start_node)
             self.astar.set_goal(self.astar.goal_node)
         elif event.type == pygame.MOUSEMOTION:
-
-                    
             if self.dragging_start:
+                self.clear_screen()
                 mouse_x, mouse_y = event.pos
                 self.start_square.x = mouse_x + self.offset_x
                 self.start_square.y = mouse_y + self.offset_y
             elif self.dragging_goal:
+                self.clear_screen()
                 mouse_x, mouse_y = event.pos
                 self.goal_square.x = mouse_x + self.offset_x
                 self.goal_square.y = mouse_y + self.offset_y
@@ -242,20 +255,27 @@ class GraphVisual(object):
                         self.astar.grid.nodes[count].toggle_state()
                     count += 1
         if pygame.key.get_pressed()[pygame.K_c]:
+            self.clear_screen()
             self.clear_grid()
         if pygame.key.get_pressed()[pygame.K_RETURN]:
+            self.toggle_shift = False
+            self.toggle_ctrl = False
+            self.closed_list_animated = 0
             self.closed_list_done = False
+            self.path_done = False
             self.pressed_enter = True
-            self.astar.update(self.astar.start_node, self.astar.goal_node)
+            if self.astar.start_node.position is not None and self.astar.goal_node.position is not None:
+                self.astar.update(self.astar.start_node, self.astar.goal_node)
         if pygame.key.get_mods() & pygame.KMOD_SHIFT:
+            self.clear_screen()
             self.toggle_shift = not self.toggle_shift
-            time.sleep(.3)
+            time.sleep(.1)
         if pygame.key.get_mods() & pygame.KMOD_CTRL:
+            self.clear_screen()
             self.toggle_ctrl = not self.toggle_ctrl
-            time.sleep(.3)
+            time.sleep(.1)
         self.draw_nodes()
         self.draw_closed_list()
-        self.draw_text()
         if self.closed_list_done:
             self.draw_path()
         if self.toggle_shift:
@@ -264,5 +284,3 @@ class GraphVisual(object):
         pygame.draw.rect(self.draw_surface, (235, 0, 0), self.goal_square)
         if self.toggle_ctrl:
             self.draw_node_information()
-
- 

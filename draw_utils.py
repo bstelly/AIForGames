@@ -5,7 +5,7 @@ import pygame
 
 class Rectangle:
     '''Class for drawing rectangles to the screen'''
- 
+
     #Prototype: def __init__(self, draw_surface, color, position, scale_x, scale_y)
     #Arguments: A draw surface, color, Vector2, an interger for length, and interger for height
     #Description: Creates a Rectangle object and draws a rectangle to the screen
@@ -18,7 +18,7 @@ class Rectangle:
         self.length = scale_x
         self.height = scale_y
         self.draw()
-        
+
     #Prototype: def draw(self)
     #Arguments: None
     #Description: Draws a rectangle to the screen
@@ -30,7 +30,7 @@ class Rectangle:
 
 class Circle:
     '''Class for drawing circles to the screen'''
-            
+
     #Prototype: def __init__(self, draw_surface, color, position, radius)
     #Arguments: A draw surface, color, Vector2, and an interger for radius
     #Description: Creates a circle object and draws a circle to the screen
@@ -42,7 +42,7 @@ class Circle:
         self.position = position
         self.radius = radius
         self.draw()
-        
+
     #Prototype: def draw(self)
     #Arguments: None
     #Description: Draws a Circle to the screen
@@ -54,7 +54,7 @@ class Circle:
 
 class Line:
     '''Class for drawing lines to the screen'''
-            
+
     #Prototype: def __init__(self, draw_surface, color, start_pos, end_pos, width)
     #Arguments: A drawing surface, color, a Vector2 for start pos, a Vector2 for end pos,
     #           and an int for width
@@ -68,7 +68,7 @@ class Line:
         self.end_position = end_pos
         self.width = width
         self.draw()
-        
+
     #Prototype: def draw(self)
     #Arguments: None
     #Description: Draws a line to the screen
@@ -81,7 +81,7 @@ class Line:
 
 class Ellipse:
     '''Class for drawing ellipses to the screen'''
-            
+
     #Prototype: def __init__ (self, draw_surface, color, position, scale_x, scale_y)
     #Arguments: a draw surface, color, Vector2, an int for length and an int for height
     #Description: Creates an instance of the Ellipse class and draws an ellipse to the screen
@@ -94,7 +94,7 @@ class Ellipse:
         self.scale_x = scale_x
         self.scale_y = scale_y
         self.draw()
-        
+
     #Prototype: def draw(self)
     #Arguments: None
     #Description: Draws an ellipse to the screen
@@ -124,7 +124,7 @@ class Text:
         self.x = x_pos
         self.y = y_pos
         self.draw()
-        
+
     #Prototype: def draw(self)
     #Arguments: None
     #Description: Draws text to the screen

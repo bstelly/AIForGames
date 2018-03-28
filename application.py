@@ -11,10 +11,10 @@ from draw_astar_visuals import GraphVisual
 class Application:
         
     #Prototype: def __init__(self, width, height)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: an int for width and and int for height
+    #Description: Creates an instance of the Application class
+    #Precondition: None
+    #Postcondition: An instance of the Application class is created
     def __init__(self, width, height):
         pygame.init()
         self.grid = Graph(27, 19)
@@ -25,10 +25,10 @@ class Application:
         self.visual_graph = GraphVisual(self.astar, 40, self.screen)
 
     #Prototype: def update(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Updates the application by passing in a pygame event to the GraphVisual update
+    #Precondition: None
+    #Postcondition: The application is updated
     def update(self):
         while True:
             for event in pygame.event.get():
@@ -38,6 +38,3 @@ class Application:
             current_event = event
             self.visual_graph.update(current_event)
             pygame.display.flip()
-
-astar_application = Application(1360, 760)
-astar_application.update()

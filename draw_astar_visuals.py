@@ -7,7 +7,7 @@ from draw_utils import Text
 from vector2 import Vector2
 
 class NodeVisual(object):
-        
+
     #Prototype: def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface)
     #Arguments: a Node object, a color, a Vector2, an int for length, an int for height,
     #           and a draw surface
@@ -20,12 +20,13 @@ class NodeVisual(object):
                                scale_x, scale_y)
 
 class GraphVisual(object):
-                
+
     #Prototype: def __init__(self, astar, node_offset, draw_surface)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: an instance of astar, an int for node offset, and a draw surface
+    #Description: Creates an instance of the GraphVisual class
+    #Precondition: There must be an instance of AStar already created and a draw surface created
+    #              using pygame
+    #Postcondition: An instance of the GraphVisual class is created
     def __init__(self, astar, node_offset, draw_surface):
         self.astar = astar
         self.node_offset = node_offset
@@ -41,6 +42,7 @@ class GraphVisual(object):
         self.closed_list_drawn = 0
         self.closed_list_animated = 0
         self.closed_list_nodes = []
+#        self.open_list_nodes =[]
         self.parents = []
 
         self.dragging_start = False
@@ -59,12 +61,12 @@ class GraphVisual(object):
         self.start_square = pygame.rect.Rect(1320, 640, 36, 36)
         self.goal_square = pygame.rect.Rect(1277, 640, 36, 36)
         self.draw_text()
-    
+
     #Prototype: def gen_visual_nodes(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Generates the visual nodes and gives them colliders
+    #Precondition: There must be an instance of GraphVisual
+    #Postcondition: An instance of GraphVisual has a grid of visual nodes
     def gen_visual_nodes(self):
         count = 0
         x = 3
@@ -80,12 +82,12 @@ class GraphVisual(object):
                 y += self.node_offset
             x += self.node_offset
             y = 3
-    
+
     #Prototype: def draw_nodes(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Draws the visual nodes every frame
+    #Precondition: There must be an instance of GraphVisual
+    #Postcondition: The screen displays the visual nodes
     def draw_nodes(self):
         if self.closed_list_done and self.path_done:
             for node in self.node_visuals:
@@ -100,12 +102,13 @@ class GraphVisual(object):
                 node.shape.draw()
         self.sort_visual_nodes_in_closed_list()
 
-    
+
     #Prototype: def draw_path(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Draws the path returned from AStar using the visual nodes
+    #Precondition: There must be an instance of GraphVisual and an instance of Astar
+    #              must retun a path
+    #Postcondition: The screen now displays a line that travels from start to goal
     def draw_path(self):
         if not self.pressed_enter:
             self.animate_iterator = 0
@@ -141,22 +144,24 @@ class GraphVisual(object):
                 count_two += 1
             self.animate_iterator += 1
             self.animate_iterator_two += 1
-        
+
     #Prototype: def draw_text(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Draws text to the screen
+    #Precondition: There must be an instance of GraphVisual
+    #Postcondition: Text is displayed to the screen
     def draw_text(self):
     #LEFT SIDE (1090)
-        line_one = Text("A-STAR Algorithm", "arial black", 27, (255, 255, 255), self.draw_surface, 1090, 10)
+        line_one = Text("A* Algorithm", "arial black", 37, (255, 255, 255), self.draw_surface, 1090, 10)
 
-        
+
     #Prototype: def clear_grid(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None Clears the grid by resetting astar, and setting traversability of all
+    #           nodes to True
+    #Description: Clears the grid by resetting astar, and setting traversability of all
+    #             nodes to True
+    #Precondition: There must be an instance of GraphVisual
+    #Postcondition: The grid is reset to a default state
     def clear_grid(self):
         for x in range(0, self.astar.grid.length * self.astar.grid.height):
             if self.astar.grid.nodes[x].traversable is False:
@@ -165,21 +170,22 @@ class GraphVisual(object):
         self.pressed_enter = False
         self.pressed_shift = False
         del self.parents[:]
-        
+
     #Prototype: def clear_screen(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Wipes the screen to the background color and redraws text
+    #Precondition: There must be a draw surface created using pygame
+    #Postcondition: The screen is wiped to the background color
     def clear_screen(self):
         self.draw_surface.fill((0, 0, 0))
         self.draw_text()
-        
+
     #Prototype: def sort_visual_nodes_in_closed_list(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Sorts closed list nodes for GraphVisual in the same order as the astar closed
+    #             list
+    #Precondition: There must be an instance of GraphVisual
+    #Postcondition: The close_list_nodes are sorted in the same order as the astar closed list
     def sort_visual_nodes_in_closed_list(self):
         if self.astar.closed_list:
             done = False
@@ -192,15 +198,32 @@ class GraphVisual(object):
                             count += 1
                     else:
                         done = True
-        
+#            done = False
+#            count = 0
+#            new_list = map(len, self.astar.visual_neighbors)
+#            total_neighbors = 0
+#            x = 0
+#            while x < len(self.astar.visual_neighbors):
+#                total_neighbors += new_list[x] + new_list[x + 1]
+#                x += 2
+#            while not done:
+#                for node in self.node_visuals:
+#                    if count < len(map(len, self.astar.visual_neighbors)):
+#                        if node.node.position == self.astar.visual_neighbors[count].position:
+#                            self.open_list_nodes.append(node)
+#                           count += 1
+#                   else:
+#                        done = True
+
+
     #Prototype: def draw_closed_list(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Draws an animated closed list to the screen
+    #Precondition: There must be an instance of GraphVisual with A* algorithm finished running
+    #Postcondition: The closed list is drawn to the screen
     def draw_closed_list(self):
         if (self.astar.closed_list and self.closed_list_animated < len(self.astar.closed_list)
-            and self.closed_list_nodes):
+                and self.closed_list_nodes):
             self.closed_list_drawn = 0
             self.closed_list_nodes[self.closed_list_animated].shape.color = (0, 0, 180)
             self.closed_list_nodes[self.closed_list_animated].shape.draw()
@@ -212,15 +235,16 @@ class GraphVisual(object):
         else:
             self.closed_list_done = True
             del self.closed_list_nodes[:]
-        
+
     #Prototype: def draw_parents(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Draws the parents for every node in the open or closed list
+    #Precondition: There must be an instance of GraphVisual with A* algorithm finished running
+    #Postcondition: The screen has lines drawn from each node to its parent
     def draw_parents(self):
         for node in self.node_visuals:
-            if self.astar.open_list.__contains__(node.node) or self.astar.closed_list.__contains__(node.node):
+            if (self.astar.open_list.__contains__(node.node) or
+                    self.astar.closed_list.__contains__(node.node)):
                 new_line = Line(self.draw_surface, (255, 100, 0),
                                 Vector2(node.shape.position.x_pos + 17,
                                         node.shape.position.y_pos + 17),
@@ -231,27 +255,36 @@ class GraphVisual(object):
         if self.parents:
             for line in self.parents:
                 line.draw()
-        
+
     #Prototype: def draw_node_information(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Displays the G, H, and F score of every node by drawing them using text on every
+    #             visual node in the closed or open list
+    #Precondition: There must be an instance of GraphVisual with A* finished running
+    #Postcondition: Every visual node in the closed or open list now displays its own F, G, and H
+    #               score
     def draw_node_information(self):
         color = (0, 150, 0)
         font = "impact"
         for node in self.node_visuals:
-            if self.astar.closed_list.__contains__(node.node) or self.astar.open_list.__contains__(node.node):
-                gscore_text = Text("G = " + str(node.node.g_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos - 1)
-                hscore_text = Text("H = " + str(node.node.h_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 10)
-                fscore_text = Text("F = " + str(node.node.f_score), font, 11, color, self.draw_surface, node.shape.position.x_pos + 1, node.shape.position.y_pos + 21)
+            if (self.astar.closed_list.__contains__(node.node) or
+                    self.astar.open_list.__contains__(node.node)):
+                gscore_text = Text("G = " + str(node.node.g_score), font, 11, color,
+                                   self.draw_surface, node.shape.position.x_pos + 1,
+                                   node.shape.position.y_pos - 1)
+                hscore_text = Text("H = " + str(node.node.h_score), font, 11, color,
+                                   self.draw_surface, node.shape.position.x_pos + 1,
+                                   node.shape.position.y_pos + 10)
+                fscore_text = Text("F = " + str(node.node.f_score), font, 11, color,
+                                   self.draw_surface, node.shape.position.x_pos + 1,
+                                   node.shape.position.y_pos + 21)
 
-        
+
     #Prototype: def update(self, event)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: Pygame Event
+    #Description: Updates the application according to the Pygame event passed in
+    #Precondition: There must be an instance of GraphVisual and a pygame event must be passed in
+    #Postcondition: The application is updated
     def update(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.path_done = True
@@ -319,7 +352,8 @@ class GraphVisual(object):
             elif self.mouse_is_down:
                 count = 0
                 for node in self.node_visual_colliders:
-                    if node.collidepoint(event.pos) and self.astar.grid.nodes[count].traversable is self.current_state:
+                    if (node.collidepoint(event.pos) and
+                            self.astar.grid.nodes[count].traversable is self.current_state):
                         self.astar.grid.nodes[count].toggle_state()
                     count += 1
         if pygame.key.get_pressed()[pygame.K_c]:
@@ -332,7 +366,8 @@ class GraphVisual(object):
             self.closed_list_done = False
             self.path_done = False
             self.pressed_enter = True
-            if self.astar.start_node.position is not None and self.astar.goal_node.position is not None:
+            if (self.astar.start_node.position is not None and
+                    self.astar.goal_node.position is not None):
                 self.astar.update(self.astar.start_node, self.astar.goal_node)
         if pygame.key.get_mods() & pygame.KMOD_SHIFT:
             self.clear_screen()

@@ -5,12 +5,12 @@ from graph import Graph
 from vector2 import Vector2
 
 class AStar:
-            
+
     #Prototype: def __init__(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Creates an instance of the AStar class
+    #Precondition: None
+    #Postcondition: An instance of the AStar class is created
     def __init__(self):
         self.grid = None
         self.open_list = []
@@ -19,12 +19,13 @@ class AStar:
         self.goal_node = None
         self.current_node = None
         self.path = None
-        
+
     #Prototype: def find_current(self)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: None
+    #Description: Finds the current node in the path, adds it to the closed list and removes it
+    #             from the open list
+    #Precondition: There must be an instance of the AStar class
+    #Postcondition: The current node is found, added to the closed list, and removed from open list
     def find_current(self):
         '''Function to find the current node in the path
         the current node gets added to the closed list and then removed from the open list'''
@@ -33,10 +34,10 @@ class AStar:
         self.open_list.remove(self.current_node)
 
     #Prototype: def find_path(self, start, goal, graph)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: A Node object for start, a Node object for goal, and a graph object for graph
+    #Description: Finds the path from start node to goal node
+    #Precondition: There must be an instance of AStar
+    #Postcondition: The path is found and returned as a list of nodes
     def find_path(self, start, goal, graph):
         '''Function to generate a path from start to end node'''
         self.start_node = start

@@ -9,10 +9,11 @@ from vector2 import Vector2
 class NodeVisual(object):
         
     #Prototype: def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface)
-    #Arguments: 
-    #Description: 
-    #Precondition: 
-    #Postcondition: 
+    #Arguments: a Node object, a color, a Vector2, an int for length, an int for height,
+    #           and a draw surface
+    #Description: Creates an instance of the NodeVisual class and displays a rectangle
+    #Precondition: None
+    #Postcondition: An instance of the NodeVisual class is created
     def __init__(self, node, color, draw_pos, scale_x, scale_y, draw_surface):
         self.node = node
         self.shape = Rectangle(draw_surface, color, draw_pos,

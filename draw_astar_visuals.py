@@ -57,8 +57,8 @@ class GraphVisual(object):
         self.offset_x = 0
         self.offset_y = 0
 
-        self.start_square = pygame.rect.Rect(1175, 407, 36, 36)
-        self.goal_square = pygame.rect.Rect(1321, 407, 36, 36)
+        self.start_square = pygame.rect.Rect(1175, 457, 36, 36)
+        self.goal_square = pygame.rect.Rect(1321, 457, 36, 36)
         self.draw_text()
 
     #Prototype: def gen_visual_nodes(self)
@@ -152,21 +152,21 @@ class GraphVisual(object):
     def draw_text(self):
     #LEFT SIDE (1090)
         line_one = Text("A* Algorithm", "arial black", 37, (255, 255, 255), self.draw_surface, 1090, 10)
-        line_two = Text("Instructions: Drag the start", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 85)
-        line_three = Text("and goal node anywhere onto", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 105)
-        line_four = Text("the grid using the mouse. You", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 125)
-        line_five = Text("can create walls by clicking on", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 145)
-        line_six = Text("an empty node in the grid.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 165)
-        line_seven = Text("You can also click and drag to", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 185)
-        line_eight = Text("make walls.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 205)
-        line_nine = Text("Press ENTER to find the path.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 225)
-        line_ten = Text("Press SHIFT to display each", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 245)
-        line_eleven = Text("nodes parents.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 265)
-        line_twelve = Text("Press CTRL to display each", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 285)
-        line_thirteen = Text("nodes G, H, and F scores.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 305)
-        line_fourteen = Text("Press 'C' to clear the grid.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 325)
-        line_fifteen = Text("Press ESCAPE to quit.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 345)
-        line_sixteen = Text("START:           GOAL:", "arial black", 20, (255, 255, 255), self.draw_surface, 1090, 410)
+        line_two = Text("INSTRUCTIONS: Drag the start", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 85)
+        line_three = Text("and goal node anywhere onto", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 107)
+        line_four = Text("the grid using the mouse. You", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 129)
+        line_five = Text("can create or remove walls by", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 151)
+        line_six = Text("clicking on a node in the grid.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 173)
+        line_seven = Text("You can also click and drag to", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 195)
+        line_eight = Text("make walls.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 217)
+        line_nine = Text("Press ENTER to find the path.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 239)
+        line_ten = Text("Press SHIFT to display each", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 261)
+        line_eleven = Text("nodes parents.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 283)
+        line_twelve = Text("Press CTRL to display each", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 305)
+        line_thirteen = Text("nodes G, H, and F scores.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 327)
+        line_fourteen = Text("Press 'C' to clear the grid.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 349)
+        line_fifteen = Text("Press ESCAPE to quit.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 371)
+        line_sixteen = Text("START:           GOAL:", "arial black", 20, (255, 255, 255), self.draw_surface, 1090, 460)
 
 
 
@@ -332,12 +332,14 @@ class GraphVisual(object):
                 count += 1
             if self.dragging_start is True:
                 self.start_square.left = 1175
-                self.start_square.top = 407
+                self.start_square.top = 457
                 self.dragging_start = False
+                self.astar.start_node = Node(None)
             if self.dragging_goal is True:
                 self.goal_square.left = 1321
-                self.goal_square.top = 407
+                self.goal_square.top = 457
                 self.dragging_goal = False
+                self.astar.goal_node = Node(None)
             self.astar.set_start(self.astar.start_node)
             self.astar.set_goal(self.astar.goal_node)
         elif event.type == pygame.MOUSEMOTION:

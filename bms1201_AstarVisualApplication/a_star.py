@@ -21,7 +21,6 @@ class AStar:
         self.current_node = start
         self.open_list.append(start)
         self.path = []
-#        self.visual_neighbors = []
 
     #Prototype: def set_start(self, start_node)
     #Arguments: A Node object
@@ -65,7 +64,6 @@ class AStar:
         while not self.closed_list.__contains__(self.goal_node) and self.open_list:
             self.find_current()
             neighbors = self.grid.get_neighbors(self.current_node)
-#            self.visual_neighbors.append((neighbors[:]))
             for neighbor in neighbors:
                 if (neighbor.traversable and not self.closed_list.__contains__(neighbor)):
                     #Check to see if neighbor is in open list. If not append it and calculate

@@ -42,7 +42,6 @@ class GraphVisual(object):
         self.closed_list_drawn = 0
         self.closed_list_animated = 0
         self.closed_list_nodes = []
-#        self.open_list_nodes =[]
         self.parents = []
 
         self.dragging_start = False
@@ -58,8 +57,8 @@ class GraphVisual(object):
         self.offset_x = 0
         self.offset_y = 0
 
-        self.start_square = pygame.rect.Rect(1320, 640, 36, 36)
-        self.goal_square = pygame.rect.Rect(1277, 640, 36, 36)
+        self.start_square = pygame.rect.Rect(1175, 407, 36, 36)
+        self.goal_square = pygame.rect.Rect(1321, 407, 36, 36)
         self.draw_text()
 
     #Prototype: def gen_visual_nodes(self)
@@ -153,6 +152,26 @@ class GraphVisual(object):
     def draw_text(self):
     #LEFT SIDE (1090)
         line_one = Text("A* Algorithm", "arial black", 37, (255, 255, 255), self.draw_surface, 1090, 10)
+        line_two = Text("Instructions: Drag the start", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 85)
+        line_three = Text("and goal node anywhere onto", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 105)
+        line_four = Text("the grid using the mouse. You", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 125)
+        line_five = Text("can create walls by clicking on", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 145)
+        line_six = Text("an empty node in the grid.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 165)
+        line_seven = Text("You can also click and drag to", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 185)
+        line_eight = Text("make walls.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 205)
+        line_nine = Text("Press ENTER to find the path.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 225)
+        line_ten = Text("Press SHIFT to display each", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 245)
+        line_eleven = Text("nodes parents.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 265)
+        line_twelve = Text("Press CTRL to display each", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 285)
+        line_thirteen = Text("nodes G, H, and F scores.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 305)
+        line_fourteen = Text("Press 'C' to clear the grid.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 325)
+        line_fifteen = Text("Press ESCAPE to quit.", "calibri", 22, (255, 255, 255), self.draw_surface, 1090, 345)
+        line_sixteen = Text("START:           GOAL:", "arial black", 20, (255, 255, 255), self.draw_surface, 1090, 410)
+
+
+
+
+
 
 
     #Prototype: def clear_grid(self)
@@ -198,23 +217,6 @@ class GraphVisual(object):
                             count += 1
                     else:
                         done = True
-#            done = False
-#            count = 0
-#            new_list = map(len, self.astar.visual_neighbors)
-#            total_neighbors = 0
-#            x = 0
-#            while x < len(self.astar.visual_neighbors):
-#                total_neighbors += new_list[x] + new_list[x + 1]
-#                x += 2
-#            while not done:
-#                for node in self.node_visuals:
-#                    if count < len(map(len, self.astar.visual_neighbors)):
-#                        if node.node.position == self.astar.visual_neighbors[count].position:
-#                            self.open_list_nodes.append(node)
-#                           count += 1
-#                   else:
-#                        done = True
-
 
     #Prototype: def draw_closed_list(self)
     #Arguments: None
@@ -329,12 +331,12 @@ class GraphVisual(object):
                                                         self.node_visuals[count].node.get_y()))
                 count += 1
             if self.dragging_start is True:
-                self.start_square.left = 1320
-                self.start_square.top = 640
+                self.start_square.left = 1175
+                self.start_square.top = 407
                 self.dragging_start = False
             if self.dragging_goal is True:
-                self.goal_square.left = 1277
-                self.goal_square.top = 640
+                self.goal_square.left = 1321
+                self.goal_square.top = 407
                 self.dragging_goal = False
             self.astar.set_start(self.astar.start_node)
             self.astar.set_goal(self.astar.goal_node)
